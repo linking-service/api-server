@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // [CONFIGURE SERVER PORT]
-var port = process.env.PORT || 8080;
+var port = 1024;
 
 // [CONFIGURE ROUTER]
 var router = require('./routes')(app,name);
