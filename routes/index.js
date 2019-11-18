@@ -53,9 +53,9 @@ module.exports =  function(app,name){
         })
     });
     */
-
+    /*
     app.post('/name', function(req, res){
-        /*
+        
         var Name = new name();
         Name.name = req.body.name;
         Name.user_id = req.body.user_id;
@@ -70,26 +70,25 @@ module.exports =  function(app,name){
             }
             res.json({result: 1});
         });
-        */
+        
        var user_email = req.body.email;
         name.findOne({email : user_email}, ){
 
         };
     });
+    */
+   app.post('app', function(req, res){
+    var u_id = req.body.id;
+    var u_pw = req.body.pw;
+  
+    name.findOne({id : u_id, pw: u_pw}, function(err, user){
+      if(err) return console.log(err);
+      else if(user == null){
+        res.send({code: 0})
+      }else{
+        res.send({code: 1})
+      }
+    })
+  });
     //////
-
-    router.post('/signin', function(req, res, next){
-        var u_id = req.body.id;
-        var u_pw = req.body.pw;
-      
-        name.findOne({id : u_id, pw: u_pw}, function(err, user){
-          if(err) return console.log(err);
-          else if(user == null){
-            res.send({code: 0})
-          }else{
-            res.send({code: 1})
-          }
-        })
-      });
-
 }
