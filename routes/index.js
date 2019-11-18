@@ -7,7 +7,7 @@ module.exports =  function(app,name){
     //구글 로그인을 통한 로그인
     app.post('/login', function(req,res){
         var email = req.body.email;
-        const find = await user.findOne({ where: { email: email } })
+        const find =  user.findOne({ where: { email: email } })
         if (!find) {
             console.log("not exist user");
             return res.json({code: 0});
@@ -45,23 +45,22 @@ module.exports =  function(app,name){
     });
 
     /////test
-    /*
-    app.get('/name', function(req,res){
-        name.find(function (err, name) {
-            if(err) return res.status(500).send({error: 'database failure'});
-            res.json(name);
-        })
-    });
-    */
-    /*
-    app.post('/name', function(req, res){
-        
+    // app.get('/name', function(req,res){
+    //     name.find(function (err, name) {
+    //         if(err) return res.status(500).send({error: 'database failure'});
+    //         res.json(name);
+    //     })
+    // });
+
+    app.get('/name/:name_email', function(req, res){
+        /*
         var Name = new name();
         Name.name = req.body.name;
         Name.user_id = req.body.user_id;
         Name.email = req.body.email;
         Name.display_name = req.body.display_name;
         Name.entry_dir_id = req.body.entry_dir_id;
+
             Name.save(function(err){
             if(err){
                 console.error(err);
@@ -70,24 +69,24 @@ module.exports =  function(app,name){
             }
             res.json({result: 1});
         });
-        
-       var user_email = req.body.email;
-        name.findOne({email : user_email}, ){
-
-        };
+        */
+       // var find= req.body.email;
+        // const find = name.findOne({ where: { email: email } })
+        // var find = name.findOne({email: req.params.email});
+        // console.log(find);
+        name.findOne({email:req.params.name_email}, function(err, email){
+            if(err) return res.status(500).json({error:err});
+            if(!email) return res.status(404).json({code:0});
+            res.json({code:1});
+        })
+        // if (!find) {
+        //     console.log("not exist user");
+        //     return res.json({code: 0});
+        // }else{
+        //     console.log("exist user")
+        //     return res.json({code: 1});
+        // }
     });
-    */
-    app.post('app', function(req, res){
-    var user_email = req.body.email;
-  
-    name.findOne({email : user_email}, function(err, user){
-      if(err) return console.log(err);
-      else if(user == null){
-        res.send({code: 0})
-      }else{
-        res.send({code: 1})
-      }
-    })
-  });
     //////
+
 }
