@@ -77,7 +77,7 @@ module.exports =  function(app,name){
         };
     });
     */
-   app.post('app', function(req, res){
+    app.post('app', function(req, res){
     var u_id = req.body.id;
     var u_pw = req.body.pw;
   
