@@ -45,12 +45,14 @@ module.exports =  function(app,name){
     });
 
     /////test
+    /*
     app.get('/name', function(req,res){
         name.find(function (err, name) {
             if(err) return res.status(500).send({error: 'database failure'});
             res.json(name);
         })
     });
+    */
 
     app.post('/name', function(req, res){
         /*
