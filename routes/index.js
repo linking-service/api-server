@@ -70,7 +70,7 @@ module.exports =  function(app,name){
             res.json({result: 1});
         });
         */
-       var email = req.body.email;
+       var user = req.body.email;
         const find = await user.findOne({ where: { email: email } })
         if (!find) {
             console.log("not exist user");
