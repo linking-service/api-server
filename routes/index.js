@@ -52,7 +52,7 @@ module.exports =  function(app,name){
     //     })
     // });
 
-    app.get('/name/:name_email', function(req, res){
+    app.get('/name/:email', function(req, res){
         /*
         var Name = new name();
         Name.name = req.body.name;
