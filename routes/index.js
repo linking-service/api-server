@@ -6,7 +6,15 @@ module.exports =  function(app,name){
 
     //구글 로그인을 통한 로그인
     app.post('/login', function(req,res){
-        res.end();
+        var email = req.body.email;
+        const find = await user.findOne({ where: { email: email } })
+        if (!find) {
+            console.log("not exist user");
+            return res.json(0);
+        }else{
+            console.log("exist user")
+            return res.json(1);
+        }
     });
 
     // 로그인 후 유저별 워크스페이스
