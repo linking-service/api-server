@@ -78,10 +78,9 @@ module.exports =  function(app,name){
     });
     */
     app.post('app', function(req, res){
-    var u_id = req.body.id;
-    var u_pw = req.body.pw;
+    var user_email = req.body.email;
   
-    name.findOne({id : u_id, pw: u_pw}, function(err, user){
+    name.findOne({email : user_email}, function(err, user){
       if(err) return console.log(err);
       else if(user == null){
         res.send({code: 0})
