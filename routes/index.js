@@ -71,16 +71,25 @@ module.exports =  function(app,name){
             res.json({result: 1});
         });
         */
-       var email = req.body.email;
-        const find = await name.findOne( {email : email})
-        if (!find) {
-            console.log("not exist user");
-            return res.json({code: 0});
-        }else{
-            console.log("exist user")
-            return res.json({code: 1});
-        }
+       var user_email = req.body.email;
+        name.findOne({email : user_email}, ){
+
+        };
     });
     //////
+
+    router.post('/signin', function(req, res, next){
+        var u_id = req.body.id;
+        var u_pw = req.body.pw;
+      
+        userModel.findOne({id : u_id, pw: u_pw}, function(err, user){
+          if(err) return console.log(err);
+          else if(user == null){
+            res.send({code: 0})
+          }else{
+            res.send({code: 1})
+          }
+        })
+      });
 
 }
