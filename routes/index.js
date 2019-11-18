@@ -53,6 +53,7 @@ module.exports =  function(app,name){
     });
 
     app.post('/name', function(req, res){
+        /*
         var Name = new name();
         Name.name = req.body.name;
         Name.user_id = req.body.user_id;
@@ -68,6 +69,16 @@ module.exports =  function(app,name){
             }
             res.json({result: 1});
         });
+        */
+       var email = req.body.email;
+        const find = await user.findOne({ where: { email: email } })
+        if (!find) {
+            console.log("not exist user");
+            return res.json({code: 0});
+        }else{
+            console.log("exist user")
+            return res.json({code: 1});
+        }
     });
     //////
 
