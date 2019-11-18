@@ -60,7 +60,6 @@ module.exports =  function(app,name){
         Name.email = req.body.email;
         Name.display_name = req.body.display_name;
         Name.entry_dir_id = req.body.entry_dir_id;
-
             Name.save(function(err){
             if(err){
                 console.error(err);
@@ -70,8 +69,8 @@ module.exports =  function(app,name){
             res.json({result: 1});
         });
         */
-       var user = req.body.email;
-        const find = await user.findOne({ where: { email: email } })
+       var email = req.body.email;
+        const find = await name.findOne( {email : email})
         if (!find) {
             console.log("not exist user");
             return res.json({code: 0});
