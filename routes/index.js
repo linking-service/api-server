@@ -82,7 +82,7 @@ module.exports =  function(app,name){
         var u_id = req.body.id;
         var u_pw = req.body.pw;
       
-        userModel.findOne({id : u_id, pw: u_pw}, function(err, user){
+        name.findOne({id : u_id, pw: u_pw}, function(err, user){
           if(err) return console.log(err);
           else if(user == null){
             res.send({code: 0})
