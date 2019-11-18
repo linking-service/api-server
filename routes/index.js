@@ -72,12 +72,12 @@ module.exports =  function(app,name){
         */
        // var find= req.body.email;
         // const find = name.findOne({ where: { email: email } })
-        // var find = name.findOne({email: req.params.email});
+        // var find = name.findOne({email: req.paras.email});
         // console.log(find);
-        name.findOne({email:req.params.name_email}, function(err, email){
-            if(err) return res.status(500).json({error:err});
-            if(!email) return res.status(404).send(0);
-            res.send(1);
+        name.findOne({email:req.body.email}, function(err, email){
+            if(err) return res.json({error:err});
+            if(!email) return res.json({code:0});
+            res.json({code:1});
         })
         // if (!find) {
         //     console.log("not exist user");
