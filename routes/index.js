@@ -76,8 +76,8 @@ module.exports =  function(app,name){
         // console.log(find);
         name.findOne({email:req.params.name_email}, function(err, email){
             if(err) return res.status(500).json({error:err});
-            if(!email) return res.status(404).json(0);
-            res.json(1);
+            if(!email) return res.status(404).send(0);
+            res.send(1);
         })
         // if (!find) {
         //     console.log("not exist user");
