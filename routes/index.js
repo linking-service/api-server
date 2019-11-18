@@ -10,10 +10,10 @@ module.exports =  function(app,name){
         const find = await user.findOne({ where: { email: email } })
         if (!find) {
             console.log("not exist user");
-            return res.json(0);
+            return res.json({code: 0});
         }else{
             console.log("exist user")
-            return res.json(1);
+            return res.json({code: 1});
         }
     });
 
