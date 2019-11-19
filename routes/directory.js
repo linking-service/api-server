@@ -14,8 +14,6 @@ router.get('/:display_name',function(req,res){
         directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id}},function(err,directoryNameModel){
             return res.json(directoryNameModel);
         })
-        //res.json(entry_dir_id);
-        //return console.log("finding name");
     })
 });
 
