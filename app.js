@@ -1,4 +1,5 @@
 // [LOAD PACKAGES]
+var createError = require('http-errors');
 const express = require('express');
 const app = express();
 var bodyParser  = require('body-parser');
@@ -30,22 +31,25 @@ app.use((req, res, next) =>{
 
 //model 정의
 //var link = require('./models/link');
-var user = require('./models/user');
-var name = require('./models/name');
+// var user = require('./models/user');
+// var name = require('./models/name');
 //var directory = require('./models/directory');
 
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
-
+//
+// app.use(function(req, res, next) {
+//     next(createError(404));
+// });
 
 // [CONFIGURE SERVER PORT]
 var port = 1024;
 
 // [CONFIGURE ROUTER]
 // const directoryRouter = require('./routes/directory');
-const userRouter = require('./routes/user');
+const userRouter = require('./routes/user.js');
 // const linkRouter = require('./routes/link');
 // const loginRouter = require('./routes/login');
 // const followingRouter = require('./routes/follower');
