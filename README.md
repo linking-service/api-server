@@ -1,4 +1,4 @@
 # api-server
 
 - Linking API
-- Jenkins CI/CD Test
+- Jenkins CI/CD Test 완료
