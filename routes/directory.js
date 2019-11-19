@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userModel = require('../models/user');
-// const directoryModel = require('../models/directory');
+const directoryModel = require('../models/directory');
 const directoryNameModel = require('../models/directoryName');
 
 router.post('/:display_name',function(req,res){
@@ -15,6 +15,18 @@ router.post('/:display_name',function(req,res){
         })
         //res.json(entry_dir_id);
         //return console.log("finding name");
+    })
+});
+
+router.post('/:display_name/:dir_id',function(req,res){
+    directoryModel.find({dir_id:req.params.dir_id},{_id:0,dir_tree:1},function (err,dir_tree) {
+        if(err) return res.status(500).json({error:err});
+        if(!dir_tree){
+            return res.send('not exist directory');
+        }
+        directoryNameModel.find({dir_id : {$in : dir_tree[0].dir_tree}},function(err,directoryNameModel){
+            return res.json(directoryNameModel);
+        })
     })
 });
 
