@@ -1,9 +1,9 @@
 // [LOAD PACKAGES]
+
 const express = require('express');
 const app = express();
-var bodyParser  = require('body-parser');
+const bodyParser  = require('body-parser');
 var mongoose = require('mongoose');
-//
 var path = require('path');
 
 var db = mongoose.connection;
@@ -26,22 +26,46 @@ app.use((req, res, next) =>{
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
     next()
-})
+});
+
+app.get('/', (req,res)=>{
+    res.send("hello world");
+});
+
+app.listen(300, () => {
+    console.log('example app listening on port 300!');
+});
+
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// app.use(require('connect-history-api-fallback')())
+
+// app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use(bodyParser.urlencoded({extended: true}))
+// app.use(bodyParser.json())
 
 //model 정의
 //var link = require('./models/link');
-var user = require('./models/user');
-var name = require('./models/name');
+// var user = require('./models/user');
+// var name = require('./models/name');
 //var directory = require('./models/directory');
 
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
-
+//
+// app.use(function(req, res, next) {
+//     next(createError(404));
+// });
 
 // [CONFIGURE SERVER PORT]
-var port = 1024;
+const port = 1024;
 
 // [CONFIGURE ROUTER]
 // const directoryRouter = require('./routes/directory');
@@ -52,6 +76,7 @@ const userRouter = require('./routes/user');
 // const followerRouter = require('./routes/follower');
 // const searchRouter = require('./routes/search');
 // const indexRouter = require('./routes/index');
+
 
 // app.use('/',indexRouter);
 app.use('/user',userRouter);
@@ -66,7 +91,7 @@ app.use('/user',userRouter);
 // var router = require('./routes')(app,user);
 
 // [RUN SERVER]
-var server = app.listen(port, function(){
+const server = app.listen(port, function(){
     console.log("Express server has started on port " + port)
 });
 
