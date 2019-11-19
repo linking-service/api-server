@@ -9,6 +9,3 @@ docker create --name LINKING_SERVER -p 1024:1024 linking_server:latest
 
 echo Start Server
 docker start LINKING_SERVER
-
-echo Remove Unused Imamges and Container
-docker rmi -f $(docker images -qa)
