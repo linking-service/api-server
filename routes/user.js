@@ -12,7 +12,11 @@ router.post('/', function(req,res){
                     user_id : req.body.email,
                     email : req.body.email,
                     name : req.body.name,
-                    display_name : req.body.name
+                    display_name : req.body.name,
+                    following : null,
+                    follower : null,
+                    entry_dir_id : null,
+                    workflow : null
                 });
 
             user.save(function (err) {
