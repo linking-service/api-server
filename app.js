@@ -32,11 +32,6 @@ app.get('/', (req,res)=>{
     res.send("hello world");
 });
 
-app.listen(300, () => {
-    console.log('example app listening on port 300!');
-});
-
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
