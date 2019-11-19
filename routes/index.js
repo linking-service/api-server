@@ -1,3 +1,7 @@
+var express = require('express');
+var path = require('path');
+var router = express.Router();
+
 module.exports =  function(app,user){
     //메인 페이지 이동
     app.get('/', function(req,res){
@@ -90,3 +94,5 @@ module.exports =  function(app,user){
     //////test///
 
 }
+
+module.exports = router ;
