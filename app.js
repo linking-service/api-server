@@ -12,7 +12,7 @@ db.once('open', function () {
     console.log("connected to mogodb server");
 });
 
-var connect = mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'},
+mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'},
     (error) =>{
     if(error){
         console.log('몽고디비 연결 에러',error);
@@ -20,6 +20,7 @@ var connect = mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/
         console.log('몽고디비 연결 성공');
     }
 });
+var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 
 app.use((req, res, next) =>{

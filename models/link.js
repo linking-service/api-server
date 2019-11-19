@@ -12,7 +12,6 @@ var linkSchema = new Schema({
     created_time: {type: Date, default: Date.now},
     revised_time: {type: Date, default: Date.now}
 });
-
 linkSchema.plugin(autoIncrement.plugin, {
     model:'link',
     field: 'link_id', // auto-increment할 field
