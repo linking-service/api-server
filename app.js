@@ -63,7 +63,7 @@ app.use(express.json());
 const port = 1024;
 
 // [CONFIGURE ROUTER]
-// const directoryRouter = require('./routes/directory');
+const directoryRouter = require('./routes/directory');
 const userRouter = require('./routes/user');
 // const linkRouter = require('./routes/link');
 // const loginRouter = require('./routes/login');
@@ -80,7 +80,7 @@ app.use('/user',userRouter);
 // app.use('/following',followingRouter);
 // app.use('/follower',followerRouter);
 // app.use('/search',searchRouter);
-// app.use('/directory',directoryRouter);
+app.use('/directory',directoryRouter);
 
 
 // [RUN SERVER]

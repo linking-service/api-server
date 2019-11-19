@@ -44,8 +44,8 @@
 //     app.get('/user', function(req,res){
 //         user.find(function (err, user) {
 //             if(err) return res.status(500).send({error: 'database failure'});
-//             res.json(user);
-//         })
+// //             res.json(user);
+// //         })
 //     });
 //
 //     /////test
