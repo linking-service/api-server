@@ -14,12 +14,12 @@ db.once('open', function () {
 
 mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'},
     (error) =>{
-    if(error){
-        console.log('몽고디비 연결 에러',error);
-    } else{
-        console.log('몽고디비 연결 성공');
-    }
-});
+        if(error){
+            console.log('몽고디비 연결 에러',error);
+        } else{
+            console.log('몽고디비 연결 성공');
+        }
+    });
 var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 

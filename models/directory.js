@@ -10,4 +10,5 @@ var directorySchema = new Schema({
     shared: [String]
 });
 
+
 module.exports = mongoose.model('directory',directorySchema,'directory');
