@@ -5,13 +5,14 @@ const userModel = require('../models/user');
 // const directoryNameModel = require('../models/directoryName');
 
 router.post('/:display_name',function(req,res){
-    userModel.findOne({display_name:req.body.display_name},function (err, display_name){
+    userModel.find({display_name:req.params.display_name},{_id:0,entry_dir_id: 1},function (err, userModel){
         if(err) return res.status(500).json({error:err});
-        if(!display_name){
+        if(!userModel){
             return res.send('not exist user');
         }
-        return res.send('good');
-        // userModel.findOne({})
+        return console.log("finding name");
+
+        //res.json(userModel);
     })
 });
 
