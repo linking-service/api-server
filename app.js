@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 var port = 1024;
 
 // [CONFIGURE ROUTER]
-var router = require('./routes')(app,name);
+var router = require('./routes')(app,user);
 
 // [RUN SERVER]
 var server = app.listen(port, function(){

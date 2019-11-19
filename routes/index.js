@@ -1,4 +1,4 @@
-module.exports =  function(app,name){
+module.exports =  function(app,user){
     //메인 페이지 이동
     app.get('/', function(req,res){
         res.end();
@@ -52,7 +52,7 @@ module.exports =  function(app,name){
     //     })
     // });
 
-    app.get('/name', function(req, res){
+    app.get('/user/:user_email', function(req, res){
         /*
         var Name = new name();
         Name.name = req.body.name;
@@ -73,8 +73,8 @@ module.exports =  function(app,name){
         // const find = name.findOne({ where: { email: email } })
         // var find = name.findOne({email: req.params.email});
         // console.log(find);
-        var user_email = req.params.email;
-        name.findOne({email:user_email}, function(err, email){
+        // var user_email = req.params.email;
+        user.findOne({email:req.params.user_email}, function(err, email){
             if(err) return res.status(500).json({error:err});
             if(!email) return res.status(404).json(0);
             res.json(1);
