@@ -52,7 +52,7 @@ module.exports =  function(app,name){
     //     })
     // });
 
-    app.post('/name', function(req, res){
+    app.get('/name', function(req, res){
         /*
         var Name = new name();
         Name.name = req.body.name;
@@ -70,7 +70,8 @@ module.exports =  function(app,name){
             res.json({result: 1});
         });
         */
-         var find= req.body;
+        var find = req.params.email
+        // var find= req.body;
         // const find = name.findOne({ where: { email: email } })
         // var find = name.findOne({email: req.paras.email});
         // console.log(find);
