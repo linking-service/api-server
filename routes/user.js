@@ -10,7 +10,7 @@ router.get('/user/:user_email', function(req,res){
         res.json({code : 1});
     })
     */
-   res.send(1);
+   res.send(10);
 });
 
 
