@@ -1,10 +1,10 @@
 // [LOAD PACKAGES]
-
 const express = require('express');
 const app = express();
 const bodyParser  = require('body-parser');
 var mongoose = require('mongoose');
 var path = require('path');
+var autoIncrement =require('mongoose-auto-increment');
 
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -12,7 +12,7 @@ db.once('open', function () {
     console.log("connected to mogodb server");
 });
 
-mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'},
+var connect = mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'},
     (error) =>{
     if(error){
         console.log('몽고디비 연결 에러',error);
@@ -20,6 +20,7 @@ mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNe
         console.log('몽고디비 연결 성공');
     }
 });
+autoIncrement.initialize(connect);
 
 app.use((req, res, next) =>{
     res.header("Access-Control-Allow-Origin", "*")
@@ -44,12 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(bodyParser.urlencoded({extended: true}))
 // app.use(bodyParser.json())
 
-//model 정의
-//var link = require('./models/link');
-// var user = require('./models/user');
-// var name = require('./models/name');
-//var directory = require('./models/directory');
-
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -65,7 +60,7 @@ const port = 1024;
 // [CONFIGURE ROUTER]
 const directoryRouter = require('./routes/directory');
 const userRouter = require('./routes/user');
-// const linkRouter = require('./routes/link');
+const linkRouter = require('./routes/link');
 // const followingRouter = require('./routes/follower');
 // const followerRouter = require('./routes/follower');
 // const searchRouter = require('./routes/search');
@@ -74,7 +69,7 @@ const userRouter = require('./routes/user');
 
 // app.use('/',indexRouter);
 app.use('/user',userRouter);
-// app.use('/link',linkRouter);
+app.use('/link',linkRouter);
 // app.use('/following',followingRouter);
 // app.use('/follower',followerRouter);
 // app.use('/search',searchRouter);
