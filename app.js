@@ -88,8 +88,6 @@ app.use('/user',userRouter);
 // app.use('/directory',directoryRouter);
 
 
-// var router = require('./routes')(app,user);
-
 // [RUN SERVER]
 const server = app.listen(port, function(){
     console.log("Express server has started on port " + port)

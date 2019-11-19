@@ -9,8 +9,5 @@ router.get('/:user_email', function(req,res){
         res.json({code : 1});
     })
 });
-// router.get('/', (req,res)=>{
-//     res.send("hello world");
-// });
-//
+
 module.exports = router;
