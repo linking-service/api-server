@@ -6,10 +6,10 @@ const userSchema = new Schema({
     email: String,
     name: String,
     display_name: String,
- //   following: [String],
-  //  follower: [String],
+    following: [String],
+    follower: [String],
     entry_dir_id: String,
-   // workflow: [String]
+    workflow: [String]
 });
 
 module.exports = mongoose.model('user',userSchema,'user');
