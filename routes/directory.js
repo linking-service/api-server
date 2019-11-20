@@ -5,7 +5,7 @@ const directoryModel = require('../models/directory');
 const directoryNameModel = require('../models/directoryName');
 
 //유저 최상위 디렉토리 출력
-router.get('/:display_name',function(req,res){
+router.post('/:display_name',function(req,res){
     userModel.find({display_name:req.params.display_name},{_id:0,entry_dir_id: 1},function (err, entry_dir_id){
         if(err) return res.status(500).json({error:err});
         if(!entry_dir_id){
