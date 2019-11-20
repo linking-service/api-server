@@ -4,7 +4,7 @@ var autoIncrement = require('mongoose-auto-increment');
 
 
 var directoryNameSchema = new Schema({
-    dir_id: String,
+    dir_id: Number,
     name: String
 });
 

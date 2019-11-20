@@ -4,7 +4,7 @@ var autoIncrement = require('mongoose-auto-increment');
 
 var linkSchema = new Schema({
     link_id: Number,
-    dir_id: String,
+    dir_id: Number,
     link: String,
     tag: String,
     desc: String,

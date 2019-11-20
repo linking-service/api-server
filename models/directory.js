@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var directorySchema = new Schema({
-    dir_id: String,
-    user_id: String,
+    dir_id: Number,
+    user_id: Number,
     // type: Number,
-    dir_tree: [String],
-    link_data: [String],
+    dir_tree: [Number],
+    link_data: [Number],
     shared: [String]
 });
 
