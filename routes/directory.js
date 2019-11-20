@@ -91,9 +91,10 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
             var directory = new directoryModel({
                 dir_id : json(dir_id),
                 user_id : req.params.display_name,
-
+                dir_tree : null,
+                shared : null,
+                link_id :null
             })
-
         }
         //const createDirID = json(dir_id);
        // return res.json(dir_id);
