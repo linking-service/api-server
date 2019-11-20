@@ -71,6 +71,7 @@ router.get('/:display_name/:dir_id/delete',function(req,res){
 router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     const named = req.body.name;
     var dirId = req.params.dir_id;
+    var displayName = req.params.display_name;
 
     const directoryName = new directoryNameModel({
         name: named,
@@ -84,27 +85,31 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     }
 
         //저장된 디렉토리 이름 호출 후 array에 저장
+    //dir_id === 0 이면 최상위 디렉토리
     directoryNameModel.find({name : named},{_id:0,dir_id:1},function(err,dir_id){
         if(err) return res.status(500).json({error:err});
         if(!dir_id){
             return res.send('not exist user');
         }
-        var jsonID = dir_id[0];
-        obj = JSON.parse(jsonID);
+        var jsonID = JSON.stringify(dir_id[0]);
+        console.log(JSON.parse(jsonID).dir_id);
+
         if(dirId == 0){
             var directory = new directoryModel({
-                dir_id : obj.dir_id,
+                dir_id : JSON.parse(jsonID).dir_id,
                 user_id : req.params.display_name,
             });
+
             directory.save(function(err){
                 if(err) return console.log(err);
-                console.log('directory saved');
-                // return res.json(directory);
             });
+
+            directoryModel.find({user_id : displayName },{_id:0,dir_id:1},function(err,dir_id){
+                return res.json(dir_id);
+            })
+
+
         }
-        return res.send("fin");
-        //const createDirID = json(dir_id);
-       // return res.json(dir_id);
     })
     //dir_id === 0 이면 최상위 디렉토리
     // if(req.params.dir_id === 0){
