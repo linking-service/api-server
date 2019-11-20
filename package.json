@@ -16,8 +16,8 @@
     "http-errors": "^1.7.3",
     "mongoose": "^5.7.9",
     "mongoose-auto-increment": "^5.0.1",
-    "pm2": "^4.1.2",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "pm2": "^4.1.2"
   },
   "repository": {
     "type": "git",
