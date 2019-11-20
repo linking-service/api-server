@@ -80,8 +80,6 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
         console.log('save error');
         console.log(err);
     }
-    //
-    // if(req.params.display_name ===0)
 
         //저장된 디렉토리 이름 호출 후 array에 저장
     directoryNameModel.find({name : named},{_id:0,dir_id:1},function(err,dir_id){
@@ -89,8 +87,25 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
         if(!dir_id){
             return res.send('not exist user');
         }
-        return res.json(dir_id);
+        if(req.params.dir_id === 0){
+            var directory = new directoryModel({
+                dir_id : json(dir_id),
+                user_id : req.params.display_name,
+
+            })
+
+        }
+        //const createDirID = json(dir_id);
+       // return res.json(dir_id);
     })
+    //dir_id === 0 이면 최상위 디렉토리
+    // if(req.params.dir_id === 0){
+    //     var directory = new directoryModel({
+    //         dir_id : createDirID,
+    //
+    //     })
+    //
+    // }
 });
 
 module.exports = router;
