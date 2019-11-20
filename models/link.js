@@ -9,6 +9,9 @@ var linkSchema = new Schema({
     tag: String,
     desc: String,
     read_status: Number,
+    meta_title: String,
+    meta_desc :String,
+    meta_imgUrl :String,
     created_time: {type: Date, default: Date.now},
     revised_time: {type: Date, default: Date.now}
 });

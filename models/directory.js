@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var directorySchema = new Schema({
     dir_id: Number,
-    user_id: Number,
+    user_id: String,
     // type: Number,
     dir_tree: [Number],
     link_data: [Number],

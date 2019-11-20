@@ -1,30 +1,63 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const linkModel = require('../models/link');
-const directoryModel = require('../models/directory');
-
-
+const linkModel = require("../models/link");
+const directoryModel = require("../models/directory");
+const Scraper = require("../utils/Scraper");
 
 // link 추가
-router.post('/:dir_id/saved',function(req,res){
-    directoryModel.findOne({dir_id:req.body.dir_id}, function(err, result){
-        if(err) return res.send('error');
-        if(!result){
-            var link = new linkModel({
-                dir_id : req.body.dir_id,
-                link : req.body.link,
-                tag : req.body.tag,
-                desc : req.body.desc,
-                read_status : 1
-            });
+router.post("/:dir_id/saved", async (req, res) => {
+    let result = null;
 
-            link.save(function (err) {
-                if(err) return console.log(err);
-                console.log('link saved!');
-                return res.send('saved');
-            });
-        }
-    })
+    try {
+        result = await directoryModel.findOne({
+            dir_id: req.params.dir_id
+        });
+        console.log(result);
+    } catch (err) {
+        return res.status(500).json({
+            msg: "DB Find Error"
+        });
+    }
+    if (!result) {
+        res.status(404).json({
+            msg: "Cannot find the directory id"
+        });
+        return;
+    }
 
+    const scraper = new Scraper(req.body.link);
+    let resData = null;
+    try {
+        resData = await scraper.getResponse();
+    } catch (err) {
+        console.log(`Scraping Error\n ${err}`);
+        res.status(500).json({
+            msg: "Request for metadata failed"
+        });
+        return;
+    }
+    const metadata = scraper.getData(resData);
+
+    const link = new linkModel({
+        dir_id: req.params.dir_id,
+        tag: req.body.tag,
+        desc: req.body.desc,
+        meta_title: metadata.title,
+        meta_desc: metadata.desc,
+        meta_imgUrl: metadata.imgUrl,
+        read_status: 1
+    });
+
+    try {
+        await link.save();
+    } catch (err) {
+        console.log(`Link Insertion Error\n ${err}`);
+        res.status(500).json({
+            msg: "DB Insertion Error"
+        });
+        return;
+    }
+
+    res.status(202).json(metadata);
 });
 module.exports = router;

@@ -70,6 +70,8 @@ router.get('/:display_name/:dir_id/delete',function(req,res){
 //디렉토리 추가
 router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     const named = req.body.name;
+    var dirId = req.params.dir_id;
+
     const directoryName = new directoryNameModel({
         name: named,
     });
@@ -87,15 +89,20 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
         if(!dir_id){
             return res.send('not exist user');
         }
-        if(req.params.dir_id === 0){
+        var jsonID = dir_id[0];
+        obj = JSON.parse(jsonID);
+        if(dirId == 0){
             var directory = new directoryModel({
-                dir_id : json(dir_id),
+                dir_id : obj.dir_id,
                 user_id : req.params.display_name,
-                dir_tree : null,
-                shared : null,
-                link_id :null
-            })
+            });
+            directory.save(function(err){
+                if(err) return console.log(err);
+                console.log('directory saved');
+                // return res.json(directory);
+            });
         }
+        return res.send("fin");
         //const createDirID = json(dir_id);
        // return res.json(dir_id);
     })
