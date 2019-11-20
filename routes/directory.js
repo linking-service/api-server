@@ -18,20 +18,18 @@ router.post('/:display_name',function(req,res){
 });
 
 //유저 디렉토리 호출
-router.post('/:display_name/:dir_id',function(req,res){
-    try{
-    directoryModel.find({dir_id:req.params.dir_id},{_id:0,dir_tree:1},function (err,dir_tree) {
-        // if(err) return res.status(500).json({error:err});
-        // if(!dir_tree){
-        //     return res.send('not exist directory');
-        //     //link 호출
-        // }
-        directoryNameModel.find({dir_id : {$in : dir_tree[0].dir_tree}},function(err,directoryNameModel){
+router.post('/:display_name/:dir_id',function(req,res) {
+    directoryModel.find({dir_id: req.params.dir_id}, {_id: 0, dir_tree: 1}, function (err, dir_tree) {
+        if (err) return res.status(500).json({error: err});
+        if (!dir_tree) {
+            return res.send('not exist directory');
+            //link 호출
+        }
+        // return res.json(dir_tree);
+        directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1}, function (err, directoryNameModel) {
             return res.json(directoryNameModel);
         })
-    })} catch(err){
-        console.error(err);
-    }
+    })
 });
 
 //디렉토리 수정
@@ -68,18 +66,32 @@ router.get('/:display_name/:dir_id/delete',function(req,res){
     })
 });
 
-//디렉토리 추가
-router.post('/:display_name/:dir_id/add',function(req,res){
-    var directoryName = new directoryNameModel();
-        directoryName.name = req.body.name;
 
-    directoryName.save(function(err){
-        if(err) return console.log(err);
-        console.log('Add directory');
-        return res.send('add');
+//디렉토리 추가
+router.post('/:display_name/:dir_id/add', async (req, res, next) => {
+    const named = req.body.name;
+    const directoryName = new directoryNameModel({
+        name: named,
     });
-    //저장된 디렉토리 이름 호출 후 array에 저장
-})
+    try {
+        await directoryName.save();
+        console.log('Add directory');
+    } catch (err) {
+        console.log('save error');
+        console.log(err);
+    }
+    //
+    // if(req.params.display_name ===0)
+
+        //저장된 디렉토리 이름 호출 후 array에 저장
+    directoryNameModel.find({name : named},{_id:0,dir_id:1},function(err,dir_id){
+        if(err) return res.status(500).json({error:err});
+        if(!dir_id){
+            return res.send('not exist user');
+        }
+        return res.json(dir_id);
+    })
+});
 
 module.exports = router;
 
