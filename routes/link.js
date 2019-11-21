@@ -61,4 +61,31 @@ router.post("/:dir_id/saved", async (req, res) => {
 
     res.status(202).json(metadata);
 });
+
+//링크 데이터 전달
+router.post("/:dir_id/:link_id" , async (req, res) => {
+    let result = null;
+
+    try {
+        result = await linkModel.find({
+            dir_id: req.params.dir_id,
+            link_id: req.params.link_id
+        },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1
+        });
+        console.log("DB find");
+        return await res.json(result);
+    } catch (err) {
+        return res.status(500).json({
+            msg: "DB Find error"
+        });
+    }
+    if (!result) {
+        res.status(404).json({
+            msg: "Cannot find the directory id"
+        });
+        return;
+    }
+});
+
 module.exports = router;
