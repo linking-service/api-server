@@ -25,9 +25,8 @@ router.post('/:display_name/:dir_id',function(req,res) {
             return res.send('not exist directory');
             //link 호출
         }
-        // return res.json(dir_tree[0].dir_tree);
+        // return res.json(dir_tree);
         directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1}, function (err, directoryNameModel) {
-            if(!directoryNameModel.length) return res.send('fail');
             return res.json(directoryNameModel);
         })
     })
@@ -85,7 +84,7 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
         console.log(err);
     }
 
-        //저장된 디렉토리 이름 호출 후 array에 저장
+    //저장된 디렉토리 이름 호출 후 array에 저장
     //dir_id === 0 이면 최상위 디렉토리
     directoryNameModel.find({name : named},{_id:0,dir_id:1},function(err,dir_id){
         if(err) return res.status(500).json({error:err});
@@ -93,7 +92,7 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
             return res.send('not exist user');
         }
         var jsonID = JSON.stringify(dir_id[0]);
-        console.log(JSON.parse(jsonID).dir_id);
+        //console.log(JSON.parse(jsonID).dir_id);
 
         if(dirId == 0){
             var directory = new directoryModel({
@@ -105,21 +104,16 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
                 if(err) return console.log(err);
             });
 
+            //display_name과 일치하는 디렉토리 배열 user entry_dir_id에 update
             directoryModel.find({user_id : displayName },{_id:0,dir_id:1},function(err,dir_id){
-                return res.json(dir_id);
+                var obj= JSON.stringify(dir_id);
+                // for(var key in obj){
+                //     console.log(obj[key]);
+                // }
             })
-
-
         }
+        return res.send("finish");
     })
-    //dir_id === 0 이면 최상위 디렉토리
-    // if(req.params.dir_id === 0){
-    //     var directory = new directoryModel({
-    //         dir_id : createDirID,
-    //
-    //     })
-    ///
-    // }
 });
 
 module.exports = router;
