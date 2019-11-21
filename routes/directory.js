@@ -25,9 +25,9 @@ router.post('/:display_name/:dir_id',function(req,res) {
             return res.send('not exist directory');
             //link 호출
         }
-        // return res.json(dir_tree);
+        // return res.json(dir_tree[0].dir_tree);
         directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1}, function (err, directoryNameModel) {
-            if(!directoryNameModel.length) return res.send('null');
+            if(!directoryNameModel.length) return res.send('fail');
             return res.json(directoryNameModel);
         })
     })
