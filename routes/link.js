@@ -39,6 +39,7 @@ router.post("/:dir_id/saved", async (req, res) => {
     const metadata = scraper.getData(resData);
 
     const link = new linkModel({
+        link : req.body.link,
         dir_id: req.params.dir_id,
         tag: req.body.tag,
         desc: req.body.desc,
