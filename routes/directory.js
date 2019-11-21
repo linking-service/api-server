@@ -66,7 +66,6 @@ router.get('/:display_name/:dir_id/delete',function(req,res){
     })
 });
 
-
 //디렉토리 추가
 router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     const named = req.body.name;
@@ -85,35 +84,48 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     }
 
     //저장된 디렉토리 이름 호출 후 array에 저장
-    //dir_id === 0 이면 최상위 디렉토리
-    directoryNameModel.find({name : named},{_id:0,dir_id:1},function(err,dir_id){
-        if(err) return res.status(500).json({error:err});
-        if(!dir_id){
+    directoryNameModel.find({name: named}, {_id: 0, dir_id: 1}, function (err, dir_id) {
+        if (err) return res.status(500).json({error: err});
+        if (!dir_id) {
             return res.send('not exist user');
         }
         var jsonID = JSON.stringify(dir_id[0]);
-        //console.log(JSON.parse(jsonID).dir_id);
 
-        if(dirId == 0){
             var directory = new directoryModel({
-                dir_id : JSON.parse(jsonID).dir_id,
-                user_id : req.params.display_name,
+                dir_id: JSON.parse(jsonID).dir_id,
+                user_id: req.params.display_name,
+            });
+            directory.save(function (err) {
+                if (err) return console.log(err);
             });
 
-            directory.save(function(err){
-                if(err) return console.log(err);
-            });
-
+        //dir_id === 0 이면 최상위 디렉토리, user entry_dir_id에 생성된 디렉토리 id 추가
+        if (dirId == 0) {
             //display_name과 일치하는 디렉토리 배열 user entry_dir_id에 update
-            directoryModel.find({user_id : displayName },{_id:0,dir_id:1},function(err,dir_id){
-                var obj= JSON.stringify(dir_id);
-                // for(var key in obj){
-                //     console.log(obj[key]);
-                // }
+            userModel.find({display_name: displayName}, {_id: 0, entry_dir_id: 1}, function (err, entry_dir_id) {
+                if (err) return res.status(500).json({error: err});
+                if (!entry_dir_id) {
+                    return res.send('not exist user');
+                }
+                console.log(entry_dir_id[0]);
+                userModel.updateOne({display_name :displayName}, {$push: {entry_dir_id: JSON.parse(jsonID).dir_id}},function(err, result){
+                    if(err) console.log(err);
+                    console.log('entry saved');
+                    console.log(result)
+                })
+            return res.send("entry_dir_id saved");
             })
         }
-        return res.send("finish");
-    })
+        //유저 하위 디렉토리에 새로운 디렉토리 추가 => 해당 디렉토리의 dir_tree에 생성된 디렉토리 id 추가
+        else{
+            directoryModel.updateOne({dir_id :dirId}, {$push:{dir_tree : JSON.parse(jsonID).dir_id}},function(err, result){
+                if(err) console.log(err);
+                console.log('dir_tree');
+                console.log(result)
+            })
+            return res.send("dir_tree saved");
+        }
+    });
 });
 
 module.exports = router;
