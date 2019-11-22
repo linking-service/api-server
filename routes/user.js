@@ -12,9 +12,6 @@ router.post('/', function(req,res){
                     email : req.body.email,
                     name : req.body.name,
                     display_name : req.body.name,
-                    following : null,
-                    follower : null,
-                    workflow : null
                 });
 
             user.save(function (err) {

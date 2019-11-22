@@ -8,7 +8,8 @@ const userSchema = new Schema({
     following: [String],
     follower: [String],
     entry_dir_id: [Number],
-    workflow: [Number]
+    workflow: [Number],
+    favorite : [Number]
 });
 
 module.exports = mongoose.model('user',userSchema,'user');

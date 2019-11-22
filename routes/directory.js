@@ -130,5 +130,6 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     });
 });
 
+// TODO 디렉토리 공유
 module.exports = router;
 

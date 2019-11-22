@@ -140,4 +140,6 @@ router.post("/:link_id/delete", async (req, res)=>{
             }
         })
 })
+
+// TODO 링크 읽으면 status 변경
 module.exports = router;

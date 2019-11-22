@@ -25,4 +25,6 @@ router.post("/:display_name/read", async (req,res)=>{
     }
 });
 
+//TODO following 유저 삭제
+
 module.exports = router;

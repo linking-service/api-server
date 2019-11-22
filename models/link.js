@@ -6,7 +6,7 @@ var linkSchema = new Schema({
     link_id: Number,
     dir_id: Number,
     link: String,
-    tag: String,
+    tag: [String],
     desc: String,
     read_status: Number,
     meta_title: String,
