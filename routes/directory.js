@@ -27,7 +27,9 @@ router.post('/:display_name/:dir_id',function(req,res) {
         }
         // return res.json(dir_tree);
         directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1}, function (err, directoryNameModel) {
-            return res.json(directoryNameModel);
+            if(directoryNameModel.length){
+                return res.json(directoryNameModel);
+            }return res.send('result is null');
         })
     })
 });
