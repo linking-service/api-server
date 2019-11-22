@@ -63,7 +63,7 @@ router.post("/:dir_id/saved", async (req, res) => {
 });
 
 //링크 데이터 전달 디렉토리 id/링크 id
-router.post("/:dir_id/:link_id" , async (req, res) => {
+router.post("/:dir_id/:link_id/read" , async (req, res) => {
     let result = null;
 
     try {
@@ -89,7 +89,7 @@ router.post("/:dir_id/:link_id" , async (req, res) => {
 });
 
 //디렉토리 내부 모든 링크 호출
-router.post("/:dir_id" , async (req, res) => {
+router.post("/:dir_id/read" , async (req, res) => {
     let result = null;
 
     try {
@@ -112,5 +112,32 @@ router.post("/:dir_id" , async (req, res) => {
         return;
     }
 });
+//링크 수정
 
+router.post("/:link_id/update" ,async (req,res) =>{
+    linkModel.findOneAndUpdate({link_id : req.params.link_id},
+        {
+            tag: req.body.tag,
+            desc: req.body.desc
+        },function (err){
+        if(err){
+            console.log(err)
+            res.send("update fail");
+        }
+        else{res.send("updated")}
+        })
+})
+
+//링크 삭제
+router.post("/:link_id/delete", async (req, res)=>{
+    linkModel.deleteOne({link_id : req.params.link_id},
+        function (err) {
+            if (err) {
+                console.log(err)
+                res.send('delete fail');
+            } else {
+                res.send('delete link')
+            }
+        })
+})
 module.exports = router;
