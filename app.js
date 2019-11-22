@@ -62,8 +62,8 @@ const port = 1024;
 const directoryRouter = require('./routes/directory');
 const userRouter = require('./routes/user');
 const linkRouter = require('./routes/link');
-// const followingRouter = require('./routes/follower');
-// const followerRouter = require('./routes/follower');
+const followingRouter = require('./routes/following');
+const followerRouter = require('./routes/follower');
 // const searchRouter = require('./routes/search');
 // const indexRouter = require('./routes/index');
 
@@ -71,8 +71,8 @@ const linkRouter = require('./routes/link');
 // app.use('/',indexRouter);
 app.use('/user',userRouter);
 app.use('/link',linkRouter);
-// app.use('/following',followingRouter);
-// app.use('/follower',followerRouter);
+app.use('/following',followingRouter);
+app.use('/follower',followerRouter);
 // app.use('/search',searchRouter);
 app.use('/directory',directoryRouter);
 

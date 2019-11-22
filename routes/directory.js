@@ -36,7 +36,7 @@ router.post('/:display_name/:dir_id',function(req,res) {
 
 //디렉토리 수정
 router.post('/:display_name/:dir_id/update',function(req,res){
-    directoryNameModel.findOne(req.body.dir_id, function(err, directoryNameModel){
+    directoryNameModel.findOne({dir_id: req.params.dir_id}, function(err, directoryNameModel){
         if(err) res.status(500).json({error:err});
         if(!directoryNameModel){
             return res.send('directory not found');
