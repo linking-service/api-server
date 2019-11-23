@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const linkModel = require("../models/link");
 const directoryModel = require("../models/directory");
+const userModel = require("../models/user");
 const Scraper = require("../utils/Scraper");
 
 // link 추가
@@ -142,4 +143,43 @@ router.post("/:link_id/delete", async (req, res)=>{
 })
 
 // TODO 링크 읽으면 status 변경
+
+// 링크 유저 즐겨찾기 목록 저장 및 삭제
+router.post("/:display_name/:link_id/favorite", async(req, res)=>{
+    const favoriteLink = req.params.link_id;
+    let result = null;
+
+       result = await userModel.find({display_name: req.params.display_name, favorite: favoriteLink},{_id:0,favorite:1},function (err,favorite) {
+        if (err) console.log(err);
+
+        //배열에 추가
+        if (result.length == 0 || result == null) {
+            linkModel.findOneAndUpdate({link_id: favoriteLink},{
+                favorite_status: 1
+            },function(err){
+                if(err) console.log(err)
+            });
+
+            userModel.updateOne({display_name: req.params.display_name}, {$push: {favorite: favoriteLink}}, function (err) {
+                if (err) console.log(err);
+            })
+            return res.send("link to favorite");
+        }
+
+        //배열에 있는거 삭제
+        else{
+            linkModel.findOneAndUpdate({link_id: favoriteLink},{
+                favorite_status: 0
+            },function(err){
+                if(err) console.log(err)
+            });
+
+            userModel.updateOne({display_name :req.params.display_name},{$pull :{favorite: favoriteLink}},function(err){
+                if(err) console.log(err);
+            })
+        }
+        return res.send("link delete to favorite");
+    })
+})
+
 module.exports = router;
