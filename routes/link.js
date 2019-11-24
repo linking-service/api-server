@@ -72,7 +72,7 @@ router.post("/:dir_id/:link_id/read" , async (req, res) => {
             dir_id: req.params.dir_id,
             link_id: req.params.link_id
         },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
-            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1
         });
         console.log("DB find");
         return await res.json(result);
@@ -97,7 +97,7 @@ router.post("/:dir_id/read" , async (req, res) => {
         result = await linkModel.find({
             dir_id: req.params.dir_id,
         },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
-            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1
         });
         console.log("DB find");
         return await res.json(result);
@@ -130,7 +130,7 @@ router.post("/:link_id/update" ,async (req,res) =>{
 })
 
 //링크 삭제
-router.post("/:link_id/delete", async (req, res)=>{
+router.get("/:link_id/delete", async (req, res)=>{
     linkModel.deleteOne({link_id : req.params.link_id},
         function (err) {
             if (err) {
