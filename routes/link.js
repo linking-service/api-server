@@ -47,7 +47,8 @@ router.post("/:dir_id/saved", async (req, res) => {
         meta_title: metadata.title,
         meta_desc: metadata.desc,
         meta_imgUrl: metadata.imgUrl,
-        read_status: 1
+        read_status: 1,
+        favorite_status: 0
     });
 
     try {
@@ -60,7 +61,7 @@ router.post("/:dir_id/saved", async (req, res) => {
         return;
     }
 
-    res.status(202).json(metadata);
+    res.status(201).json(metadata);
 });
 
 //링크 데이터 전달 디렉토리 id/링크 id
@@ -135,9 +136,9 @@ router.get("/:link_id/delete", async (req, res)=>{
         function (err) {
             if (err) {
                 console.log(err)
-                res.send('delete fail');
+                res.status(404).send('delete fail');
             } else {
-                res.send('delete link')
+                res.status(200).send('delete link')
             }
         })
 })
