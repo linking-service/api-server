@@ -147,17 +147,33 @@ router.post("/:link_id/delete", async (req, res)=>{
 // 링크 유저 즐겨찾기 목록 저장 및 삭제
 router.post("/:display_name/:link_id/favorite", async(req, res)=>{
     const favoriteLink = req.params.link_id;
-    let result = null;
 
-       result = await userModel.find({display_name: req.params.display_name, favorite: favoriteLink},{_id:0,favorite:1},function (err,favorite) {
-        if (err) console.log(err);
+    await userModel.find({display_name: req.params.display_name, favorite: favoriteLink}, {
+        _id: 0,
+        favorite: 1
+    }, function (err, favorite) {
+        console.log(favorite.length);
+        console.log(favorite);
 
+        //배열에서 제거
+        if (favorite.length != 0 ) {
+            linkModel.findOneAndUpdate({link_id: favoriteLink}, {
+                favorite_status: 0
+            }, function (err) {
+                if (err) console.log(err)
+            });
+
+            userModel.updateOne({display_name: req.params.display_name}, {$pull: {favorite: favoriteLink}}, function (err) {
+                if (err) console.log(err);
+            })
+            return res.send("link delete to favorite");
+        }
         //배열에 추가
-        if (result.length == 0 || result == null) {
-            linkModel.findOneAndUpdate({link_id: favoriteLink},{
+        else {
+            linkModel.findOneAndUpdate({link_id: favoriteLink}, {
                 favorite_status: 1
-            },function(err){
-                if(err) console.log(err)
+            }, function (err) {
+                if (err) console.log(err)
             });
 
             userModel.updateOne({display_name: req.params.display_name}, {$push: {favorite: favoriteLink}}, function (err) {
@@ -165,20 +181,6 @@ router.post("/:display_name/:link_id/favorite", async(req, res)=>{
             })
             return res.send("link to favorite");
         }
-
-        //배열에 있는거 삭제
-        else{
-            linkModel.findOneAndUpdate({link_id: favoriteLink},{
-                favorite_status: 0
-            },function(err){
-                if(err) console.log(err)
-            });
-
-            userModel.updateOne({display_name :req.params.display_name},{$pull :{favorite: favoriteLink}},function(err){
-                if(err) console.log(err);
-            })
-        }
-        return res.send("link delete to favorite");
     })
 })
 
