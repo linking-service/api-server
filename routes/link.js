@@ -120,7 +120,9 @@ router.post("/:link_id/update" ,async (req,res) =>{
     linkModel.findOneAndUpdate({link_id : req.params.link_id},
         {
             tag: req.body.tag,
-            desc: req.body.desc
+            desc: req.body.desc,
+            revised_time: Date.now()
+
         },function (err){
         if(err){
             console.log(err)

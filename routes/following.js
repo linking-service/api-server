@@ -26,5 +26,16 @@ router.post("/:display_name/read", async (req,res)=>{
 });
 
 //TODO following 유저 삭제
+router.post("/:display_name/:following/delete" ,async (req, res)=>{
+    const displayName = req.params.display_name;
+    const followingName = req.params.following;
+
+    await userModel.findOneAndUpdate({display_name: displayName, following: followingName},{
+        $pull:{following: followingName}}, function(err){
+        if (err) console.log(err);
+    })
+    return res.send("following name is deleted!!");
+})
+
 
 module.exports = router;
