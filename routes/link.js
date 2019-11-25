@@ -47,7 +47,8 @@ router.post("/:dir_id/saved", async (req, res) => {
         meta_title: metadata.title,
         meta_desc: metadata.desc,
         meta_imgUrl: metadata.imgUrl,
-        read_status: 1
+        read_status: 1,
+        favorite_status: 0
     });
 
     try {
@@ -60,7 +61,7 @@ router.post("/:dir_id/saved", async (req, res) => {
         return;
     }
 
-    res.status(202).json(metadata);
+    res.status(201).json(metadata);
 });
 
 //링크 데이터 전달 디렉토리 id/링크 id
@@ -72,7 +73,7 @@ router.post("/:dir_id/:link_id/read" , async (req, res) => {
             dir_id: req.params.dir_id,
             link_id: req.params.link_id
         },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
-            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1
         });
         console.log("DB find");
         return await res.json(result);
@@ -97,7 +98,7 @@ router.post("/:dir_id/read" , async (req, res) => {
         result = await linkModel.find({
             dir_id: req.params.dir_id,
         },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
-            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1
         });
         console.log("DB find");
         return await res.json(result);
@@ -130,14 +131,14 @@ router.post("/:link_id/update" ,async (req,res) =>{
 })
 
 //링크 삭제
-router.post("/:link_id/delete", async (req, res)=>{
+router.get("/:link_id/delete", async (req, res)=>{
     linkModel.deleteOne({link_id : req.params.link_id},
         function (err) {
             if (err) {
                 console.log(err)
-                res.send('delete fail');
+                res.status(404).send('delete fail');
             } else {
-                res.send('delete link')
+                res.status(200).send('delete link')
             }
         })
 })
