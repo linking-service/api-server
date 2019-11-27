@@ -25,7 +25,11 @@ router.post("/:display_name/read", async (req,res)=>{
     }
 });
 
-//TODO following 유저 삭제
+//following 유저 삭제
+
+/*
+ TODO 삭제하는 유저의 follower 목록에서 제거되어야함
+ */
 router.post("/:display_name/:following/delete" ,async (req, res)=>{
     const displayName = req.params.display_name;
     const followingName = req.params.following;
@@ -37,5 +41,9 @@ router.post("/:display_name/:following/delete" ,async (req, res)=>{
     return res.send("following name is deleted!!");
 })
 
+//TODO following 목록에 추가
+/*
+following 목록에 추가시 대상유저의 follower목록에도 추가되어야함
+ */
 
 module.exports = router;
