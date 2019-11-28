@@ -7,6 +7,7 @@ var linkSchema = new Schema({
     dir_id: Number,
     link: String,
     tag: String,
+    //tag array[string]변경
     desc: String,
     read_status: Number,
     favorite_status :Number,

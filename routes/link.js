@@ -48,7 +48,7 @@ router.post("/:dir_id/saved", async (req, res) => {
         meta_title: metadata.title,
         meta_desc: metadata.desc,
         meta_imgUrl: metadata.imgUrl,
-        read_status: 1,
+        read_status: 0,
         favorite_status: 0
     });
 
@@ -147,7 +147,7 @@ router.get("/:link_id/delete", async (req, res)=>{
         })
 })
 
-// 링크 읽으면 status 변경
+//TODO 링크 읽으면 status 변경 0->1
 router.post("/:link_id/readState", async(req, res)=> {
    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
         read_status: 1 ? 0 : 1
@@ -197,4 +197,13 @@ router.post("/:display_name/:link_id/favorite", async(req, res)=>{
     })
 })
 
+
+//favorite 링크 출력
+router.post("/:display_name/favorite/call", async(req,res)=>{
+    await userModel.find({display_name:req.params.display_name},{_id:0, favorite:1},
+        function (err, favorite){
+        if(err) console.log(err);
+        return res.json(favorite[0]);
+    });
+})
 module.exports = router;
