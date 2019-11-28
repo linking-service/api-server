@@ -5,6 +5,7 @@ const directoryModel = require('../models/directory');
 const directoryNameModel = require('../models/directoryName');
 
 //유저 최상위 디렉토리 출력
+//TODO public private 분리해서 출력
 router.post('/:display_name',function(req,res){
     userModel.find({display_name:req.params.display_name},{_id:0,entry_dir_id: 1},function (err, entry_dir_id){
         if(err) return res.status(500).json({error:err});
@@ -138,10 +139,38 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
 공유 대상자들 즉 shared 배열에 있는 유저들에게는 shared 카테고리에 뿌려줌
 ->공유대상자가 shared 카테고리를 클릭하면 디렉토리 shared에서 display_name이 있는거 다 뿌려줌
 또한 dir_id를 통해 디렉토리 이름과 링크또한 출력
+//TODO shared 카테고리 출력
 
-//TODO 디렉토리 접근 권한 변경
+
+
+ */
+
+/*디렉토리 접근 권한 변경
 private, public 카테고리는 유저의 설정을 통해서만 변경해 뿌려줌(공유와 무관)
 public 변경시 유저의 directoryName의 type은 public 상태인 1로 변경
  */
-module.exports = router;
+router.post("/:dir_id/:name/change", async(req, res)=>{
+    await directoryNameModel.find({dir_id: req.params.dir_id},{
+        _id : 0,dir_type: 1
+    }, function(err, dir_type){
+        console.log(dir_type);
+        const type = dir_type[0].dir_type;
+        if(type ==0){
+            directoryNameModel.findOneAndUpdate({dir_id:req.params.dir_id},{
+                dir_type :1
+            },function (err){
+                if(err) console.log(err);})
+        }
+        else{
+            directoryNameModel.findOneAndUpdate({dir_id:req.params.dir_id},{
+                dir_type :0
+            },function (err){
+                if(err) console.log(err);
+            })
+        }
+        if(err) console.log(err)
+    });
+    return res.send("directory type changed!!");
+});
 
+module.exports = router;

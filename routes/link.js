@@ -6,6 +6,7 @@ const userModel = require("../models/user");
 const Scraper = require("../utils/Scraper");
 
 // link 추가
+
 router.post("/:dir_id/saved", async (req, res) => {
     let result = null;
 
@@ -91,6 +92,7 @@ router.post("/:dir_id/:link_id/read" , async (req, res) => {
 });
 
 //디렉토리 내부 모든 링크 호출
+//TODO 수정 시간 순서대로 sorting한 후 res
 router.post("/:dir_id/read" , async (req, res) => {
     let result = null;
 
@@ -147,7 +149,7 @@ router.get("/:link_id/delete", async (req, res)=>{
 
 // 링크 읽으면 status 변경
 router.post("/:link_id/readState", async(req, res)=> {
-    linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
+   await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
         read_status: 1 ? 0 : 1
     }, function (err) {
         if (err) console.log(err)
