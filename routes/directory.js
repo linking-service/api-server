@@ -11,7 +11,7 @@ router.post('/:display_name',function(req,res){
         if(!entry_dir_id){
             return res.send('not exist user');
         }
-        directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id}},{_id:0,dir_id: 1,name:1},function(err,directoryNameModel){
+        directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id}},{_id:0,dir_id: 1,name:1,type:1},function(err,directoryNameModel){
             return res.json(directoryNameModel);
         })
     })
@@ -26,7 +26,7 @@ router.post('/:display_name/:dir_id',function(req,res) {
             //link 호출
         }
         // return res.json(dir_tree);
-        directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1}, function (err, directoryNameModel) {
+        directoryNameModel.find({dir_id: {$in: dir_tree[0].dir_tree}},{_id:0,dir_id:1,name:1,type:1}, function (err, directoryNameModel) {
             if(directoryNameModel.length){
                 return res.json(directoryNameModel);
             }return res.send('result is null');
