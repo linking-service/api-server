@@ -4,15 +4,29 @@ const userModel = require('../models/user');
 const directoryModel = require('../models/directory');
 const directoryNameModel = require('../models/directoryName');
 
-//유저 최상위 디렉토리 출력
-//TODO public private 분리해서 출력
-router.post('/:display_name',function(req,res){
+//유저 최상위 public 디렉토리 출력
+
+router.post('/:display_name/public',function(req,res){
     userModel.find({display_name:req.params.display_name},{_id:0,entry_dir_id: 1},function (err, entry_dir_id){
         if(err) return res.status(500).json({error:err});
         if(!entry_dir_id){
             return res.send('not exist user');
         }
-        directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id}},{_id:0,dir_id: 1,name:1,type:1},function(err,directoryNameModel){
+        directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id},dir_type:1},{_id:0,dir_id: 1,name:1,dir_type:1},function(err,directoryNameModel){
+            return res.json(directoryNameModel);
+        })
+    })
+});
+
+//유저 최상위 private 디렉토리 출력
+
+router.post('/:display_name/private',function(req,res){
+    userModel.find({display_name:req.params.display_name},{_id:0,entry_dir_id: 1},function (err, entry_dir_id){
+        if(err) return res.status(500).json({error:err});
+        if(!entry_dir_id){
+            return res.send('not exist user');
+        }
+        directoryNameModel.find({dir_id : {$in : entry_dir_id[0].entry_dir_id},dir_type:0},{_id:0,dir_id: 1,name:1,dir_type:1},function(err,directoryNameModel){
             return res.json(directoryNameModel);
         })
     })

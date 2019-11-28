@@ -92,7 +92,6 @@ router.post("/:dir_id/:link_id/read" , async (req, res) => {
 });
 
 //디렉토리 내부 모든 링크 호출
-//TODO 수정 시간 순서대로 sorting한 후 res
 router.post("/:dir_id/read" , async (req, res) => {
     let result = null;
 
@@ -101,7 +100,7 @@ router.post("/:dir_id/read" , async (req, res) => {
             dir_id: req.params.dir_id,
         },{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1
-        });
+        }).sort({'revised_time':-1});
         console.log("DB find");
         return await res.json(result);
     } catch (err) {
