@@ -145,7 +145,7 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
     });
 });
 
-// TODO 디렉토리 공유
+// 디렉토리 공유
 /*
 [공유]
 유저가 디렉토리 공유 버튼 클릭시 해당 디렉토리 shared 배열에 공유대상의 display_name 저장
@@ -153,11 +153,19 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
 공유 대상자들 즉 shared 배열에 있는 유저들에게는 shared 카테고리에 뿌려줌
 ->공유대상자가 shared 카테고리를 클릭하면 디렉토리 shared에서 display_name이 있는거 다 뿌려줌
 또한 dir_id를 통해 디렉토리 이름과 링크또한 출력
+ */
+router.post("/:dir_id/:display_name/share", async(req,res)=>{
+        directoryModel.updateOne({dir_id : req.params.dir_id},{$push:{shared: req.params.display_name}},function(err){
+        if(err) console.log(err);
+        res.send("share to user")
+    })
+})
+
 //TODO shared 카테고리 출력
 
 
 
- */
+
 
 /*디렉토리 접근 권한 변경
 private, public 카테고리는 유저의 설정을 통해서만 변경해 뿌려줌(공유와 무관)

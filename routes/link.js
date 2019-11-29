@@ -146,14 +146,24 @@ router.get("/:link_id/delete", async (req, res)=>{
         })
 })
 
-//TODO 링크 읽으면 status 변경 0->1
+//링크 읽음 상태변경 read_status : 0 ->1
 router.post("/:link_id/readState", async(req, res)=> {
    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
-        read_status: 1 ? 0 : 1
+        read_status: 1
     }, function (err) {
         if (err) console.log(err)
     });
-    return res.send("Read Status Changed");
+    return res.send("Read Status Changed to read");
+});
+
+//링크 읽지 않음 상태 변경 read_Status : 1->0
+router.post("/:link_id/unread", async(req, res)=> {
+    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
+        read_status: 0
+    }, function (err) {
+        if (err) console.log(err)
+    });
+    return res.send("Read Status Changed to unread");
 });
 
 // 링크 유저 즐겨찾기 목록 저장 및 삭제

@@ -26,7 +26,6 @@ router.post("/:display_name/read", async (req,res)=>{
 });
 
 //following 유저 삭제
-
 /*
  삭제하는 유저의 follower 목록에서 제거되어야함
  */
