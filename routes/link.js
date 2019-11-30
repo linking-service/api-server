@@ -208,11 +208,36 @@ router.post("/:display_name/:link_id/favorite", async(req, res)=>{
 
 
 //favorite 링크 출력
+// TODO 링크 출력
 router.post("/:display_name/favorite/call", async(req,res)=>{
-    await userModel.find({display_name:req.params.display_name},{_id:0, favorite:1},
-        function (err, favorite){
-        if(err) console.log(err);
-        return res.json(favorite[0]);
-    });
-})
+    let favorite = null;
+    try {
+        favorite = await userModel.find({display_name: req.params.display_name}, {_id: 0, favorite: 1});
+    } catch(e){
+        console.log(err);
+        return res.status(500).json({
+            msg: "Cannot find favorite",
+        });
+    }
+
+    let resultArray= [];
+    for(let i =0; i<(favorite[0].favorite).length; i++){
+        let result = null;
+        try {
+            result = await linkModel.find({
+                link_id: (favorite[0].favorite)[i]
+            }, {
+                _id: 0, link: 1, tag: 1, desc: 1, meta_desc: 1, meta_imgUrl: 1, meta_title: 1,
+                read_status: 1, created_time: 1, revised_time: 1, link_id: 1, favorite_status: 1
+            });
+        } catch(err){
+            console.log(err);
+            continue;
+        }
+        resultArray.push(result[0]);
+    }
+    return res.json(resultArray);
+});
+
+
 module.exports = router;
