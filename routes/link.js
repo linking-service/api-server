@@ -126,7 +126,7 @@ router.post("/:link_id/update" ,async (req,res) =>{
 
         },function (err){
         if(err){
-            console.log(err)
+            console.log(err);
             res.send("update fail");
         }
         else{res.send("updated")}
