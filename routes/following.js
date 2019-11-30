@@ -43,7 +43,7 @@ router.post("/:display_name/read", async (req,res)=>{
 /*
  삭제하는 유저의 follower 목록에서 제거되어야함
  */
-router.post("/:display_name/:following/delete" ,async (req, res)=>{
+router.get("/:display_name/:following/delete" ,async (req, res)=>{
     const displayName = req.params.display_name;
     const followingName = req.params.following;
 
