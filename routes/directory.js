@@ -66,42 +66,39 @@ router.post('/:display_name/:dir_id/update',function(req,res){
 });
 
 //디렉토리 삭제
-router.get('/:display_name/:dir_id/delete',async (req,res)=>{
-    await directoryModel.deleteOne({dir_id:req.params.dir_id}, function(err){
+router.get('/:display_name/:dir_id/delete',function(req,res){
+    var displayName = req.params.display_name;
+    var dirID = req.params.dir_id;
+    directoryModel.deleteOne({dir_id:req.params.dir_id}, function(err){
         if(err) {
             console.log(err);
             return res.send('delete fail');
-        }else {
-           // let result = null;
-            userModel.find({display_name: req.params.display_name, entry_dir_id: req.params.dir_id}, {
-                    _id: 0,
-                    entry_dir_id: 1
-                },
-                function (err, entry_dir_id) {
-                    if (err) console.log(err);
-                    console.log(entry_dir_id.length);
-                    console.log(entry_dir_id);
-                })
-
-            // if (result.length == 1) {
-            //     userModel.findOneAndUpdate({display_name: req.params.display_name, entry_dir_id: req.params.dir_id},
-            //         {$pull: {entry_dir_id: req.params.dir_id}},
-            //         function (err) {
-            //             if (err) console.log(err);
-            //         })
-            // } else {
-            //     directoryModel.findOneAndUpdate({user_id: req.params.display_name, dir_tree: req.params.dir_id},
-            //         {$pull: {dir_tree: req.params.dir_id}},
-            //         function (err) {
-            //             if (err) console.log(err);
-            //         })
-            // }
-            // directoryNameModel.deleteOne({dir_id: req.params.dir_id}, function (err) {
-            //     if (err) {
-            //         console.log(err);
-            //         return res.send('delete fail');
-            //     }
-            // })
+        }else{
+            directoryNameModel.deleteOne({dir_id:req.params.dir_id}, function(err){
+                if(err) {
+                    console.log(err);
+                    return res.send('delete fail');
+                }
+                else{
+                   userModel.find({display_name : displayName, entry_dir_id:{$in:dirID} },{
+                        _id:0,
+                        entry_dir_id:1
+                    }, function(err, entry_dir_id){
+                       if(entry_dir_id.length == 1){
+                           userModel.updateOne({display_name :displayName},{$pull:{entry_dir_id:dirID}},function (err){
+                               if(err) console.log(err);
+                           })
+                           console.log("entry_dir_id deleted");
+                       }
+                       else{
+                           directoryModel.updateOne({user_id :displayName},{$pull:{dir_tree:dirID}},function (err){
+                               if(err) console.log(err);
+                           })
+                           console.log("dir_tree deleted");
+                       }
+                   })
+                }
+            });
             return res.send('delete done');
         }
     })
