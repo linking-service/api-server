@@ -9,9 +9,9 @@ router.post("/:display_name/read", async (req,res)=>{
     try{
         result = await userModel.find({
             display_name : req.params.display_name
-        },{_id:0, follower :1,email:1});
+        },{_id:0, follower :1});
         console.log("DB find");
-        return await res.json(result);
+        return await res.json(result[0]);
     } catch(err){
         return res.status(500).json({
             msg: "DB find error"
