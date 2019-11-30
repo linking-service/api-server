@@ -134,25 +134,40 @@ router.post("/:link_id/update" ,async (req,res) =>{
 })
 
 //링크 삭제
-router.get("/:link_id/delete", async (req, res)=>{
-    linkModel.deleteOne({link_id : req.params.link_id},
-        function (err) {
-            if (err) {
-                console.log(err)
-                res.status(404).send('delete fail');
-            } else {
-                res.status(200).send('delete link')
-            }
-        })
+router.get("/:dir_id/:link_id/delete", function (req, res) {
+    var linkID = req.params.link_id;
+    var dirID = req.params.dir_id;
+
+    linkModel.deleteOne({link_id: req.params.link_id}, function (err) {
+        if (err) {
+            console.log(err);
+           // return res.send('delete fail');
+            res.status(404).send('delete fail');
+        } else {
+
+            res.status(200).send('delete link')
+        }
+    });
+    directoryModel.find({dir_id: dirID, link_id: {$in:linkID}}, {
+        _id: 0,
+        link_id: 1
+    }, function (err, link_id) {
+        if (link_id.length == 1) {
+            directoryModel.updateOne({dir_id: dirID}, {$pull: {link_id: linkID}}, function (err) {
+                if (err) console.log(err);
+            })
+            console.log("link_id deleted");
+        }
+    })
 })
 
 //링크 읽음 상태변경 read_status : 0 ->1
 router.post("/:link_id/readState", async(req, res)=> {
    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
-        read_status: 1
     }, function (err) {
         if (err) console.log(err)
     });
+    read_status: 1
     return res.send("Read Status Changed to read");
 });
 

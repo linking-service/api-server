@@ -5,7 +5,7 @@ var directorySchema = new Schema({
     dir_id: Number,
     user_id: String,
     dir_tree: [Number],
-    link_data: [Number],
+    link_id: [Number],
     shared: [String]
 });
 

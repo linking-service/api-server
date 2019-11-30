@@ -81,15 +81,15 @@ router.get('/:display_name/:dir_id/delete',function(req,res){
                 }
                 else{
                    userModel.find({display_name : displayName, entry_dir_id:{$in:dirID} },{
-                        _id:0,
-                        entry_dir_id:1
-                    }, function(err, entry_dir_id){
-                       if(entry_dir_id.length == 1){
-                           userModel.updateOne({display_name :displayName},{$pull:{entry_dir_id:dirID}},function (err){
-                               if(err) console.log(err);
-                           })
-                           console.log("entry_dir_id deleted");
-                       }
+                           _id:0,
+                           entry_dir_id:1
+                       }, function(err, entry_dir_id){
+                           if(entry_dir_id.length == 1){
+                               userModel.updateOne({display_name :displayName},{$pull:{entry_dir_id:dirID}},function (err){
+                                   if(err) console.log(err);
+                               })
+                               console.log("entry_dir_id deleted");
+                           }
                        else{
                            directoryModel.updateOne({user_id :displayName},{$pull:{dir_tree:dirID}},function (err){
                                if(err) console.log(err);
