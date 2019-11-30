@@ -208,7 +208,7 @@ router.post("/:display_name/:link_id/favorite", async(req, res)=>{
 
 
 //favorite 링크 출력
-// TODO 링크 출력
+// 링크 출력
 router.post("/:display_name/favorite/call", async(req,res)=>{
     let favorite = null;
     try {

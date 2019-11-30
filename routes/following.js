@@ -37,19 +37,44 @@ router.post("/:display_name/:following/delete" ,async (req, res)=>{
         $pull:{following: followingName}},
         function(err){
         if (err) console.log(err);
-    })
+    });
 
     await userModel.findOneAndUpdate({display_name:followingName, follower: displayName},{
         $pull:{follower :displayName}},
         function(err){
         if(err) console.log(err);
-    })
+    });
     return res.send("following name is deleted!!");
-})
+});
 
-//TODO following 목록에 추가
+//following 목록에 추가
 /*
 following 목록에 추가시 대상유저의 follower목록에도 추가되어야함
+display_name : api 호출하는 유저  following : 목록에 추가하고자 하는 유저
  */
+router.post("/:display_name/:following/add", async (req,res)=>{
+
+    userModel.find({display_name: req.params.display_name, following:req.params.following},{_id:0, following:1},
+        function(err,following){
+        if(err) console.log(err);
+        if(following.length ==1){
+            console.log(following[0].following);
+            return res.send("this user is already added");
+        }
+        else{
+            userModel.findOneAndUpdate({display_name: req.params.display_name},{$push:{following : req.params.following}},
+                function (err) {
+                    if(err) console.log(err);
+                }
+            );
+
+            userModel.findOneAndUpdate({display_name:req.params.following},{$push :{follower : req.params.display_name}},
+                function(err){
+                    if(err) console.log(err);
+                });
+            return res.send("following user is added");
+        }
+    })
+});
 
 module.exports = router;
