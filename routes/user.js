@@ -35,6 +35,7 @@ router.get("/:display_name/delete",function (req,res){
             res.status(200).send('delete user');
         }
     });
+
 })
 
 
