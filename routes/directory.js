@@ -154,15 +154,62 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
 ->공유대상자가 shared 카테고리를 클릭하면 디렉토리 shared에서 display_name이 있는거 다 뿌려줌
 또한 dir_id를 통해 디렉토리 이름과 링크또한 출력
  */
-router.post("/:dir_id/:display_name/share", async(req,res)=>{
-        directoryModel.updateOne({dir_id : req.params.dir_id},{$push:{shared: req.params.display_name}},function(err){
-        if(err) console.log(err);
-        res.send("share to user")
+router.post("/:dir_id/:display_name/share", async(req,res)=> {
+    var displayName = req.params.display_name;
+
+    directoryModel.find({shared: displayName, dir_id: req.params.dir_id}, {_id: 0, shared: 1}, function (err, shared) {
+        if (err) console.log(err);
+        if (shared.length == 1) {
+            console.log(shared[0].shared);
+            return res.send("this user already shared");
+        }
+        else {
+            directoryModel.updateOne({dir_id: req.params.dir_id}, {$push: {shared: displayName}}, function (err) {
+                if (err) console.log(err);
+                res.send("share to user")
+            })
+        }
     })
 })
 
-//TODO shared 카테고리 출력
 
+
+//shared 카테고리 출력
+router.post("/:display_name/show/shared", async (req, res) => {
+    let dir_id = null;
+    try {
+        dir_id = await directoryModel.find({
+            shared: req.params.display_name
+        }, {
+            _id: 0,
+            dir_id: 1
+        });
+    } catch (e) {
+        console.log(err); // 마지막 dir_id 못찾으면 에러 반환
+        return res.status(500).json({
+            msg: "Cannot find latest dir_id",
+        });
+    }
+
+    let resultArray = [];
+    for (let i = 0; i < dir_id.length; i++) {
+        let result = null;
+        try {
+            result = await directoryNameModel.find({
+                dir_id: dir_id[i].dir_id
+            }, {
+                _id: 0,
+                dir_id: 1,
+                name: 1
+            });
+        } catch (err) {
+            console.log(err); // 중간에 빈 dir_id가 있을 경우 그냥 continue 시켜주시면 됩니다.
+            continue;
+        }
+        resultArray.push(result[0]);
+    } //for문 끝
+    return res.json(resultArray);
+});
 
 
 
