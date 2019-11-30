@@ -3,27 +3,41 @@ var router = express.Router();
 const userModel = require('../models/user');
 
 //following한 유저 호출
-router.post("/:display_name/read", async (req,res)=>{
-    let result = null;
 
-    try{
-        result = await userModel.find({
-            display_name : req.params.display_name
-        },{_id:0, following :1,email:1});
+router.post("/:display_name/read", async (req,res)=>{
+    let following = null;
+
+    try {
+        following = await userModel.find({
+            display_name: req.params.display_name
+        }, {_id: 0, following: 1});
         console.log("DB find");
-        return await res.json(result);
-    } catch(err){
+    }
+    catch(e){
+        console.log(err);
         return res.status(500).json({
             msg: "DB find error"
         });
     }
-    if(!result){
-        res.status(404).json({
-            msg: "cannot find the following id"
-        });
-        return;
+
+    let resultArray = [];
+    for(let i =0;i< following.length; i++){
+        let result = null;
+        try{
+            result = await userModel.find({
+                display_name: following[i].following
+            },{
+                _id:0, display_name:1,name:1
+            });
+        }catch (err) {
+            console.log(err);
+            continue;
+        }
+        resultArray.push(result);
     }
+    return res.json(resultArray[0]);
 });
+
 
 //following 유저 삭제
 /*
