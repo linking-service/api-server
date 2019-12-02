@@ -207,9 +207,10 @@ router.post("/:display_name/show/shared", async (req, res) => {
         });
     } catch (e) {
         console.log(err); // 마지막 dir_id 못찾으면 에러 반환
-        return res.status(500).json({
-            msg: "Cannot find latest dir_id",
-        });
+        return res.send('Cannot find latest dir_id')
+        //res.status(500).json({
+            //msg: "Cannot find latest dir_id",
+        //});
     }
 
     let resultArray = [];
