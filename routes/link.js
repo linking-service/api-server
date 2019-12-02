@@ -251,7 +251,8 @@ router.post("/:display_name/favorite/call", async(req,res)=>{
         }
         resultArray.push(result[0]);
     }
-    return res.json(resultArray);
+    if(resultArray.length == 0) return res.send("cannot find favorite link");
+    else{return res.json(resultArray);}
 });
 
 
