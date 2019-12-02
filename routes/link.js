@@ -164,10 +164,10 @@ router.get("/:dir_id/:link_id/delete", function (req, res) {
 //링크 읽음 상태변경 read_status : 1 ->0
 router.post("/:link_id/readState", async(req, res)=> {
    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
+       read_status: 0
     }, function (err) {
         if (err) console.log(err)
     });
-    read_status: 0
     return res.send("Read Status Changed to read");
 });
 
