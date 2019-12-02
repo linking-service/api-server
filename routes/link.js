@@ -48,7 +48,7 @@ router.post("/:dir_id/saved", async (req, res) => {
         meta_title: metadata.title,
         meta_desc: metadata.desc,
         meta_imgUrl: metadata.imgUrl,
-        read_status: 0,
+        read_status: 1,
         favorite_status: 0
     });
 
