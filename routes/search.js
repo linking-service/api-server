@@ -12,7 +12,10 @@ router.get('/:keyword',async (req,res)=>{
     }
     try{
         userModel.find({},{_id:0,display_name:1}).regex("display_name" ,query).exec(function (err,display_name) {
-            return res.json(display_name);
+            if(display_name.length == 0) return res.send("search failed");
+            else {
+                return res.json(display_name);
+            }
         })
     }catch (err) {
         console.log(err);
