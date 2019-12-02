@@ -5,19 +5,33 @@ const linkModel = require("../models/link");
 const directoryModel = require("../models/directory");
 
 //user 검색
-router.get('/:keyword',async (req,res)=>{
+router.get('/:display_name/:keyword',async (req,res)=>{
     const query = req.params.keyword;
+    const displayName = req.params.display_name;
     if(!query){
         return res.send("no keyword");
     }
     try{
-        userModel.find({},{_id:0,display_name:1}).regex("display_name" ,query).exec(function (err,display_name) {
+        let resultarray =[];
+        let nonresultarray =[];
+
+        resultarray= userModel.find({},{_id:0,display_name:1, name:1}).regex("display_name" ,query).where("follower").in([displayName]).exec(function (err,display_name) {
             if(display_name.length == 0) return res.send("search failed");
+
             else {
                 return res.json(display_name);
             }
-        })
-    }catch (err) {
+        });
+//TODO follower 상태에 따라서 출력 분리 필요
+        // nonresultarray= userModel.find({},{_id:0,display_name:1, name:1,follower:1}).regex("display_name" ,query).where("follower").nin([displayName]).exec(function (err,display_name) {
+        //     if(display_name.length == 0) return res.send("search failed");
+        //
+        //     else {
+        //         return res.json(display_name);
+        //     }
+        // })
+    }
+    catch (err) {
         console.log(err);
     }
 })
