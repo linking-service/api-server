@@ -207,10 +207,9 @@ router.post("/:display_name/show/shared", async (req, res) => {
         });
     } catch (e) {
         console.log(err); // 마지막 dir_id 못찾으면 에러 반환
-        return res.send('Cannot find latest dir_id')
-        //res.status(500).json({
-            //msg: "Cannot find latest dir_id",
-        //});
+        res.status(500).json({
+            msg: "Cannot find latest dir_id",
+        });
     }
 
     let resultArray = [];
@@ -232,6 +231,7 @@ router.post("/:display_name/show/shared", async (req, res) => {
     } //for문 끝
     if(resultArray.length == 0) return res.send("cannot find shared directory");
     else{return res.json(resultArray);}
+
 });
 
 
