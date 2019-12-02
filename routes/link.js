@@ -161,20 +161,20 @@ router.get("/:dir_id/:link_id/delete", function (req, res) {
     })
 })
 
-//링크 읽음 상태변경 read_status : 0 ->1
+//링크 읽음 상태변경 read_status : 1 ->0
 router.post("/:link_id/readState", async(req, res)=> {
    await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
     }, function (err) {
         if (err) console.log(err)
     });
-    read_status: 1
+    read_status: 0
     return res.send("Read Status Changed to read");
 });
 
-//링크 읽지 않음 상태 변경 read_Status : 1->0
+//링크 읽지 않음 상태 변경 read_Status : 0->1
 router.post("/:link_id/unread", async(req, res)=> {
     await linkModel.findOneAndUpdate({link_id: req.params.link_id}, {
-        read_status: 0
+        read_status: 1
     }, function (err) {
         if (err) console.log(err)
     });
