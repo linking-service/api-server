@@ -230,7 +230,8 @@ router.post("/:display_name/show/shared", async (req, res) => {
         }
         resultArray.push(result[0]);
     } //for문 끝
-    return res.json(resultArray);
+    if(resultArray.length == 0) return res.send("cannot find shared directory");
+    else{return res.json(resultArray);}
 });
 
 
