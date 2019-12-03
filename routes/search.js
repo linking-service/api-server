@@ -12,9 +12,13 @@ router.get('/:display_name/:keyword',async (req,res)=> {
         return res.json("no keyword");
     }
     let resultarray = null;
+    let resultarray2 = null;
     try{
         resultarray = await userModel.find({},{_id:0,display_name:1, name:1}).where("follower").in([displayName])
             .regex("display_name" ,query);
+        resultarray2 = await userModel.find({},{_id:0,display_name:1, name:1,follower:1}).where("follower").nin([displayName])
+            .regex("display_name" ,query)
+
     }catch(err){
         if(err) console.log(err)
     }
@@ -38,26 +42,42 @@ router.get('/:display_name/:keyword',async (req,res)=> {
         result.push(followingStatus);
       followingarray.push(result);
     }
-   // console.log(followingarray[0][1].following_status); following 상태 접근법
-   return res.json(followingarray)
-})
 
-// //TODO follower 상태에 따라서 출력 분리 필요
+    let nonfollowingarray = [];
+    for( let i =0; i<resultarray2.length; i++){
+        let result2 = null;
+        let followingStatus = {following_status : 0};
+        try{
+            result2 = await userModel.find({
+                display_name : resultarray2[i].display_name
+            },{
+                _id:0,
+                display_name:1,
+                name:1
+            });
+        }catch(err){
+            console.log(err);
+            continue;
+        }
+        result2.push(followingStatus);
+        nonfollowingarray.push(result2);
+    }
 
-//         // nonresultarray= userModel.find({},{_id:0,display_name:1, name:1,follower:1}).regex("display_name" ,query).where("follower").nin([displayName]).exec(function (err,display_name) {
-//         //     if(display_name.length == 0) return res.send("search failed");
-//         //
-//         //     else {
-//         //         return res.json(display_name);
-//         //     }
-//         // })
-//     }
-//     catch (err) {
-//         console.log(err);
-//     }
-// })
+    let resultArray =[];
+    for(var i in followingarray){
+        resultArray.push(followingarray[i]);
+    }
+    for(var j in nonfollowingarray){
+        resultArray.push(nonfollowingarray[j]);
+    }
 
+   //  following 상태 접근법
+   //  console.log(resultArray[0][1].following_status);
+   //  console.log(resultArray[1][1].following_status);
+   //  console.log(resultArray[2][1].following_status);
+   return res.json(resultArray);
 
+});
 
 module.exports = router;
 
