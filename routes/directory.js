@@ -234,8 +234,10 @@ router.post("/:display_name/show/shared", async (req, res) => {
 
 });
 
-
-
+//디렉토리 리스트 토글
+router.get('/toggle',function(req,res) {
+    return res.json([]);
+});
 
 /*디렉토리 접근 권한 변경
 private, public 카테고리는 유저의 설정을 통해서만 변경해 뿌려줌(공유와 무관)
