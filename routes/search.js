@@ -14,10 +14,10 @@ router.get('/:display_name/:keyword',async (req,res)=> {
     let resultarray = null;
     let resultarray2 = null;
     try{
-        resultarray = await userModel.find({},{_id:0,display_name:1, name:1}).where("follower").in([displayName])
+        resultarray = await userModel.find({},{_id:0,display_name:1, name:1}).where("follower").equals(displayName)
             .regex("display_name" ,query);
-        resultarray2 = await userModel.find({},{_id:0,display_name:1, name:1,follower:1}).where("follower").nin([displayName])
-            .regex("display_name" ,query)
+        resultarray2 = await userModel.find({},{_id:0,display_name:1, name:1,follower:1}).where("follower").ne(displayName).where("display_name").ne(displayName)
+            .regex("display_name" ,query);
 
     }catch(err){
         if(err) console.log(err)
