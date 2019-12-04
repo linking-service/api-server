@@ -34,13 +34,13 @@ router.get('/:display_name/:keyword',async (req,res)=> {
                 _id:0,
                 display_name:1,
                 name:1
-            });
+            }).lean();
         }catch(err){
             console.log(err);
             continue;
         }
-        result.push(followingStatus);
-      followingarray.push(result);
+        Object.assign(followingStatus, result[0]);
+        followingarray.push(followingStatus);
     }
 
     let nonfollowingarray = [];
@@ -54,13 +54,14 @@ router.get('/:display_name/:keyword',async (req,res)=> {
                 _id:0,
                 display_name:1,
                 name:1
-            });
+            }).lean();
         }catch(err){
             console.log(err);
             continue;
         }
-        result2.push(followingStatus);
-        nonfollowingarray.push(result2);
+        //result2.push(followingStatus);
+        Object.assign(followingStatus,result2[0]);
+        nonfollowingarray.push(followingStatus);
     }
 
     let resultArray =[];
