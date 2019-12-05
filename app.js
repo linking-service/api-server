@@ -65,6 +65,7 @@ const linkRouter = require('./routes/link');
 const followingRouter = require('./routes/following');
 const followerRouter = require('./routes/follower');
 const searchRouter = require('./routes/search');
+const mailRouter = require('./routes/mail');
 // const indexRouter = require('./routes/index');
 
 
@@ -75,6 +76,7 @@ app.use('/following',followingRouter);
 app.use('/follower',followerRouter);
 app.use('/search',searchRouter);
 app.use('/directory',directoryRouter);
+app.use('/mail',mailRouter);
 
 
 // [RUN SERVER]
