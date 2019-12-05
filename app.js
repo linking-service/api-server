@@ -6,6 +6,22 @@ var mongoose = require('mongoose');
 var path = require('path');
 var autoIncrement =require('mongoose-auto-increment');
 
+var express = require('express');
+var cors = require('cors');
+var app = express();
+
+// CORS 설정
+app.use(cors());
+
+app.get('/products/:id', function (req, res, next) {
+    res.json({msg: 'This is CORS-enabled for all origins!'})
+});
+
+app.listen(80, function () {
+    console.log('CORS-enabled web server listening on port 80')
+});
+
+
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function () {
@@ -23,10 +39,15 @@ mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNe
 var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 
-app.use(function(req, res, next) {
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//     next();
+// });
+app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
     next();
 });
 
