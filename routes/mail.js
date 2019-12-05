@@ -25,7 +25,8 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
           const Mail = new mailModel({
               display_name: displayName,
               sender: senderName,
-              message: senderName + "님이 " +dirName+ " 디렉토리를 공유했습니다."
+              message: senderName + "님이 " +dirName+ " 디렉토리를 공유했습니다.",
+              status :1
           })
           Mail.save();
           return res.status(200);
@@ -37,7 +38,8 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
           const Mail = new mailModel({
               display_name: displayName,
               sender: senderName,
-              message: senderName + "님이 디렉토리를 공유를 거절했습니다."
+              message: senderName + "님이 디렉토리를 공유를 거절했습니다.",
+              status :0
           })
           Mail.save();
           return res.status(200);
@@ -48,7 +50,8 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
           const Mail = new mailModel({
               display_name: displayName,
               sender: senderName,
-              message: senderName + "님이 디렉토리를 공유를 수락했습니다."
+              message: senderName + "님이 디렉토리를 공유를 수락했습니다.",
+              status :0
           })
           Mail.save();
           return res.status(200);
@@ -69,10 +72,25 @@ router.get("/:display_name/mailnumber", async(req,res)=>{
 
 //유저 메세지함 출력
 router.get("/:display_name/mailList", async(req,res)=>{
-    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1},function (err, message) {
+    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1,status:1},function (err, message) {
         if(err) console.log(err);
 
         return res.json(message);
     })
 } )
+
+//메세지 삭제
+router.get("/:mail_id/delete", function (req, res) {
+    var mailID = req.params.mail_id;
+
+    mailModel.deleteOne({mail_id : mailID},function (err) {
+        if(err){
+            console.log(err);
+            res.status(404).send('delete fail');
+        } else{
+            res.status(200).send('delete mail')
+        }
+    })
+
+})
 module.exports = router;

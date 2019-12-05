@@ -7,6 +7,7 @@ var mailSchema = new Schema({
     message: String,
     sender: String,
     mail_id:Number,
+    status : Number,
     created_time: {type: Date, default: Date.now},
 });
 
