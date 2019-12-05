@@ -101,7 +101,7 @@ router.get('/:display_name/:keyword/all',async (req,res)=> {
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
             .regex("tag",query);
 
-        var result =_.union(metaDescResult,metaTitleResult,descResult,tagResult);
+        var result =_.union(metaTitleResult,descResult,tagResult,metaDescResult);
         var result2 = _.uniq(result,'link');
         return await res.json(result2);
 
