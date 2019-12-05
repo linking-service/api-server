@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', (req,res)=>{
-    res.send("Welcome Linking Service");
+    res.send("Hi Linking Service");
 });
 
 app.set('views', path.join(__dirname, 'views'));
