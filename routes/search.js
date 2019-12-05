@@ -80,49 +80,34 @@ router.get('/:display_name/:keyword/all',async (req,res)=> {
     if (!query) {
         return res.json("no keyword");
     }
-    let resultarray = null;
+    let metaDescResult = null;
     let metaTitleResult = null;
     let descResult = null;
     let tagResult = null;
     try{
-        resultarray = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+        metaDescResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
              meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
             .regex("meta_desc" ,query);
-        console.log(resultarray);
-        console.log("\n\n");
 
         metaTitleResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
             .regex("meta_title" ,query);
-        console.log(metaTitleResult);
-        console.log("\n\n");
 
         descResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
             .regex("desc" ,query);
-        console.log(descResult);
-        console.log("\n\n");
 
         tagResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
             .regex("tag",query);
-        console.log(tagResult);
-        console.log("\n\n");
 
-        var result = Object.assign(JSON.parse(JSON.stringify(resultarray)),JSON.parse(JSON.stringify(metaTitleResult)),JSON.parse(JSON.stringify(descResult)),JSON.parse(JSON.stringify(tagResult)));
-
-        console.log(result);
-        console.log("\n\n");
-
+        var result =_.union(metaDescResult,metaTitleResult,descResult,tagResult);
         var result2 = _.uniq(result,'link');
-
         return await res.json(result2);
 
-      // var result2 = _.uniq(result,'link');
     }catch(err){
         if(err) console.log(err)
     }
-    // return res.json(result);
 });
 
 // // tag 검색
