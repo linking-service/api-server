@@ -66,7 +66,7 @@ router.get("/:display_name/mailnumber", async(req,res)=>{
     mailModel.find({display_name:req.params.display_name},{_id:0, mail_id :1},function (err,mail_id){
         if(err) console.log(err);
 
-        return res.json({mailnumber :mail_id.length});
+        return res.json({mailnumber :JSON.stringify(mail_id.length)});
     })
 })
 
