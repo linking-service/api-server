@@ -3,6 +3,7 @@ var router = express.Router();
 const userModel = require("../models/user");
 const linkModel = require("../models/link");
 const directoryModel = require("../models/directory");
+const _ = require("underscore");
 
 //user 검색
 router.get('/:display_name/:keyword',async (req,res)=> {
@@ -59,11 +60,9 @@ router.get('/:display_name/:keyword',async (req,res)=> {
             console.log(err);
             continue;
         }
-        //result2.push(followingStatus);
         Object.assign(followingStatus,result2[0]);
         nonfollowingarray.push(followingStatus);
     }
-
     let resultArray =[];
     for(var i in followingarray){
         resultArray.push(followingarray[i]);
@@ -71,39 +70,127 @@ router.get('/:display_name/:keyword',async (req,res)=> {
     for(var j in nonfollowingarray){
         resultArray.push(nonfollowingarray[j]);
     }
-
-   //  following 상태 접근법
-   //  console.log(resultArray[0][1].following_status);
-   //  console.log(resultArray[1][1].following_status);
-   //  console.log(resultArray[2][1].following_status);
    return res.json(resultArray);
-
 });
 
-module.exports = router;
+// 전체 검색
+router.get('/:display_name/:keyword/all',async (req,res)=> {
+    const query = req.params.keyword;
+    const displayName = req.params.display_name;
+    if (!query) {
+        return res.json("no keyword");
+    }
+    let resultarray = null;
+    let metaTitleResult = null;
+    let descResult = null;
+    let tagResult = null;
+    try{
+        resultarray = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
+            .regex("meta_desc" ,query);
+        console.log(resultarray);
+        console.log("\n\n");
 
-// router.get("/", async(req,res)=>{
-//      let displayname =null;
-//     displayname = await userModel.find({},{_id:0, display_name:1},function (err){
-//         if(err) console.log(err);
-//     });
+        metaTitleResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
+            .regex("meta_title" ,query);
+        console.log(metaTitleResult);
+        console.log("\n\n");
+
+        descResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
+            .regex("desc" ,query);
+        console.log(descResult);
+        console.log("\n\n");
+
+        tagResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+            meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1})
+            .regex("tag",query);
+        console.log(tagResult);
+        console.log("\n\n");
+
+        var result = Object.assign(JSON.parse(JSON.stringify(resultarray)),JSON.parse(JSON.stringify(metaTitleResult)),JSON.parse(JSON.stringify(descResult)),JSON.parse(JSON.stringify(tagResult)));
+
+        console.log(result);
+        console.log("\n\n");
+
+        var result2 = _.uniq(result,'link');
+
+        return await res.json(result2);
+
+      // var result2 = _.uniq(result,'link');
+    }catch(err){
+        if(err) console.log(err)
+    }
+    // return res.json(result);
+});
+
+// // tag 검색
+// router.get('/:display_name/:tag',async (req,res)=> {
+//     const query = req.params.tag;
+//     const displayName = req.params.display_name;
+//     if (!query) {
+//         return res.json("no keyword");
+//     }
+//     let resultarray = null;
+//     let resultarray2 = null;
+//     try{
+//         resultarray = await linkModel.find({},{_id:0,display_name:1, name:1}).where("follower").equals(displayName)
+//             .regex("display_name" ,query);
+//         resultarray2 = await linkModel.find({},{_id:0,display_name:1, name:1,follower:1}).where("follower").ne(displayName).where("display_name").ne(displayName)
+//             .regex("display_name" ,query);
 //
-//     let resultArray = [];
+//     }catch(err){
+//         if(err) console.log(err)
+//     }
 //
-//     for(let i =0; i<(displayname[0].display_name).length;i++){
+//     let followingarray = [];
+//     for( let i =0; i<resultarray.length; i++){
 //         let result = null;
+//         let followingStatus = {following_status : 1};
 //         try{
 //             result = await userModel.find({
-//                 display_name: (displayname[i].display_name)
+//                 display_name : resultarray[i].display_name
 //             },{
-//                 _id:0, display_name:1
-//             });
-//         } catch (e) {
+//                 _id:0,
+//                 display_name:1,
+//                 name:1
+//             }).lean();
+//         }catch(err){
 //             console.log(err);
 //             continue;
 //         }
-//         resultArray.push(displayname[i].display_name);
+//         Object.assign(followingStatus, result[0]);
+//         followingarray.push(followingStatus);
 //     }
-//     if(resultArray.length ==0) return res.send("search failed");
-//     else{ return res.json(resultArray);}
-// })
+//
+//     let nonfollowingarray = [];
+//     for( let i =0; i<resultarray2.length; i++){
+//         let result2 = null;
+//         let followingStatus = {following_status : 0};
+//         try{
+//             result2 = await userModel.find({
+//                 display_name : resultarray2[i].display_name
+//             },{
+//                 _id:0,
+//                 display_name:1,
+//                 name:1
+//             }).lean();
+//         }catch(err){
+//             console.log(err);
+//             continue;
+//         }
+//         Object.assign(followingStatus,result2[0]);
+//         nonfollowingarray.push(followingStatus);
+//     }
+//     let resultArray =[];
+//     for(var i in followingarray){
+//         resultArray.push(followingarray[i]);
+//     }
+//     for(var j in nonfollowingarray){
+//         resultArray.push(nonfollowingarray[j]);
+//     }
+//     return res.json(resultArray);
+// });
+
+module.exports = router;

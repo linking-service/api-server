@@ -18,7 +18,8 @@
     "mongoose": "^5.7.9",
     "mongoose-auto-increment": "^5.0.1",
     "nodemon": "^1.19.4",
-    "pm2": "^4.1.2"
+    "pm2": "^4.1.2",
+    "underscore": "^1.9.1"
   },
   "repository": {
     "type": "git",

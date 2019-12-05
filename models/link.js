@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
 
 var linkSchema = new Schema({
+    display_name :String,
     link_id: Number,
     dir_id: Number,
     link: String,

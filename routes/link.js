@@ -7,7 +7,7 @@ const Scraper = require("../utils/Scraper");
 
 // link 추가
 
-router.post("/:dir_id/saved", async (req, res) => {
+router.post("/:display_name/:dir_id/saved", async (req, res) => {
     let result = null;
 
     try {
@@ -42,6 +42,7 @@ router.post("/:dir_id/saved", async (req, res) => {
 
     const link = new linkModel({
         link : req.body.link,
+        display_name: req.params.display_name,
         dir_id: req.params.dir_id,
         tag: req.body.tag,
         desc: req.body.desc,
