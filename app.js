@@ -6,9 +6,8 @@ var mongoose = require('mongoose');
 var path = require('path');
 var autoIncrement =require('mongoose-auto-increment');
 
-var express = require('express');
+
 var cors = require('cors');
-var app = express();
 
 // CORS 설정
 app.use(cors());
