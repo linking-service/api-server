@@ -23,11 +23,16 @@ mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNe
 var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 
-app.use((req, res, next) =>{
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
-    next()
+// app.use((req, res, next) =>{
+//     res.header("Access-Control-Allow-Origin", "*")
+//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+//     next()
+// });
+app.all('/*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
 });
 
 app.get('/', (req,res)=>{
