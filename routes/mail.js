@@ -72,7 +72,7 @@ router.get("/:display_name/mailnumber", async(req,res)=>{
 
 //유저 메세지함 출력
 router.get("/:display_name/mailList", async(req,res)=>{
-    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1,status:1},function (err, message) {
+    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1,status:1,mail_id:1},function (err, message) {
         if(err) console.log(err);
 
         return res.json(message);
