@@ -23,9 +23,9 @@ if(type ==0) {
         const dirName = name[0].name;
 
         const Mail = new mailModel({
-            display_name: displayName,
-            sender: senderName,
-            message: senderName + "님이 " + dirName + " 디렉토리를 공유했습니다.",
+            display_name: senderName,
+            sender: displayName,
+            message: displayName + "님이 " + dirName + " 디렉토리를 공유했습니다.",
             status: 1
         })
         Mail.save();
