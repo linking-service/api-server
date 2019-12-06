@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 // CORS 설정
 // app.options('*', cors());
-app.use(cors());
+// app.use(cors());
 const corsOptions ={
     origin : 'http://localhost:3000',
     credentials: true,
