@@ -157,9 +157,21 @@ router.get("/:dir_id/:link_id/delete", function (req, res) {
             directoryModel.updateOne({dir_id: dirID}, {$pull: {link_id: linkID}}, function (err) {
                 if (err) console.log(err);
             })
-            console.log("link_id deleted");
+            console.log("link_id deleted in directory model");
         }
-    })
+    });
+
+    userModel.find({favorite: {$in:linkID}}, {
+        _id: 0,
+        link_id: 1
+    }, function (err, link_id) {
+        if (link_id.length == 1) {
+            userModel.updateOne({favorite: linkID}, {$pull: {favorite: linkID}}, function (err) {
+                if (err) console.log(err);
+            })
+            console.log("link_id deleted in favorite list");
+        }
+    });
 })
 
 //링크 읽음 상태변경 read_status : 1 ->0
