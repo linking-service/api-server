@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const bodyParser  = require('body-parser');
+var cors = require('cors');
 var mongoose = require('mongoose');
 var path = require('path');
 var autoIncrement =require('mongoose-auto-increment');
@@ -10,9 +11,8 @@ var autoIncrement =require('mongoose-auto-increment');
 var cors = require('cors');
 
 // CORS 설정
+app.options('*', cors());
 app.use(cors());
-
-
 
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -37,11 +37,7 @@ autoIncrement.initialize(connect);
 //     res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 //     next();
 // });
-app.all('/*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
+
 
 app.get('/', (req,res)=>{
     res.send("Welcome Linking Service");
