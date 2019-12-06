@@ -267,4 +267,17 @@ router.post("/:dir_id/:name/change", async(req, res)=>{
     return res.send("directory type changed!!");
 });
 
+//유저 팔로잉, 팔로워 수 출력
+router.get("/:display_name", async (req,res)=>{
+    const displayName = req.params.display_name;
+
+    userModel.find({display_name : displayName},{_id:0, following :1, follower:1, name:1},function (err,result) {
+        if(err) console.log(err);
+
+        return res.json({name : result[0].name, followerNum : JSON.stringify(result[0].follower.length)
+        ,followingNum :JSON.stringify(result[0].following.length)});
+
+    }).lean();
+
+})
 module.exports = router;
