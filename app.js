@@ -11,7 +11,7 @@ var autoIncrement =require('mongoose-auto-increment');
 var cors = require('cors');
 
 // CORS 설정
-app.options('*', cors());
+// app.options('*', cors());
 app.use(cors());
 
 var db = mongoose.connection;
