@@ -35,26 +35,49 @@ if(type ==0) {
 }
 
     if(type ==1){
+        const mailID = req.body.mail_id;
+        //거절 메세지 보내기
         const Mail = new mailModel({
-            display_name: displayName,
-            sender: senderName,
-            message: senderName + "님이 디렉토리를 공유를 거절했습니다.",
+            display_name: senderName,
+            sender: displayName,
+            message: displayName + "님이 디렉토리를 공유를 거절했습니다.",
             status :0
         })
         Mail.save();
-        return res.send(200);
+        //해당 메세지 삭제
+        mailModel.deleteOne({mail_id: mailID},function (err) {
+            if(err){
+                console.log(err);
+                res.status(404).send('delete fail');
+            } else{
+                res.status(200).send('delete mail')
+            }
+        })
+
+      //  return res.send(200);
 
         // return res.json(Mail.message);
     }
     else if(type ==2){
         const Mail = new mailModel({
-            display_name: displayName,
-            sender: senderName,
-            message: senderName + "님이 디렉토리를 공유를 수락했습니다.",
+            display_name: senderName,
+            sender: displayName,
+            message: displayName + "님이 디렉토리를 공유를 수락했습니다.",
             status :0
         })
         Mail.save();
-        return res.send(200);
+
+        //해당 메세지 삭제
+        const mailID = req.body.mail_id;
+        mailModel.deleteOne({mail_id: mailID},function (err) {
+            if(err){
+                console.log(err);
+                res.status(404).send('delete fail');
+            } else{
+                res.status(200).send('delete mail')
+            }
+        })
+       // return res.send(200);
 
         // return res.json(Mail.message);
     }
