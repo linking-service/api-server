@@ -11,11 +11,8 @@ var autoIncrement =require('mongoose-auto-increment');
 
 app.use(bodyParser.json());
 
-//
-// const corsOpt = function(req, callbank){
-//     callbank(null, {origin :true});
-// };
-//
+
+
 // app.options('*',cors(corsOpt));
 
 // CORS 설정
@@ -44,12 +41,12 @@ mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNe
 var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//     res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-//     next();
-// });
+app.use((req, res, next)=> {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    next();
+});
 
 
 app.get('/', (req,res)=>{
@@ -100,9 +97,7 @@ app.use('/search',searchRouter);
 app.use('/directory',directoryRouter);
 app.use('/mail',mailRouter);
 
-// app.post('/test', cors(corsOpt),function (req, res) {
-//     res.send({test: 'ok'});
-// });
+
 // [RUN SERVER]
 const server = app.listen(port, function(){
     console.log("Express server has started on port " + port)
