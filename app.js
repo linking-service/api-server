@@ -1,5 +1,6 @@
 // [LOAD PACKAGES]
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const bodyParser  = require('body-parser');
 
@@ -10,17 +11,21 @@ var autoIncrement =require('mongoose-auto-increment');
 
 app.use(bodyParser.json());
 
-const cors = require('cors');
-
-const corsOpt = function(req, callbank){
-    callbank(null, {origin :true});
-};
-
-app.options('*',cors(corsOpt));
+//
+// const corsOpt = function(req, callbank){
+//     callbank(null, {origin :true});
+// };
+//
+// app.options('*',cors(corsOpt));
 
 // CORS 설정
 // app.options('*', cors());
-//app.use(cors());
+app.use(cors());
+const corsOptions ={
+    origin : 'http://localhost:3000',
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -95,9 +100,9 @@ app.use('/search',searchRouter);
 app.use('/directory',directoryRouter);
 app.use('/mail',mailRouter);
 
-app.post('/test', cors(corsOpt),function (req, res) {
-    res.send({test: 'ok'});
-});
+// app.post('/test', cors(corsOpt),function (req, res) {
+//     res.send({test: 'ok'});
+// });
 // [RUN SERVER]
 const server = app.listen(port, function(){
     console.log("Express server has started on port " + port)
