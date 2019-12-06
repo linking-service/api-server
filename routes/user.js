@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const userModel = require('../models/user');
 const _ = require("underscore");
+const cors = require('cors');
 
 router.post('/', async (req,res)=>{
     userModel.findOne({email:req.body.email}, function(err, email){

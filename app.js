@@ -2,18 +2,25 @@
 const express = require('express');
 const app = express();
 const bodyParser  = require('body-parser');
-var cors = require('cors');
+
 var mongoose = require('mongoose');
 var path = require('path');
 var autoIncrement =require('mongoose-auto-increment');
 
 
+app.use(bodyParser.json());
 
-var cors = require('cors');
+const cors = require('cors');
+
+const corsOpt = function(req, callbank){
+    callbank(null, {origin :true});
+};
+
+app.options('*',cors(corsOpt));
 
 // CORS 설정
 // app.options('*', cors());
-app.use(cors());
+//app.use(cors());
 
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -58,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(express.json());
 //
 // app.use(function(req, res, next) {
@@ -88,7 +95,9 @@ app.use('/search',searchRouter);
 app.use('/directory',directoryRouter);
 app.use('/mail',mailRouter);
 
-
+app.post('/test', cors(corsOpt),function (req, res) {
+    res.send({test: 'ok'});
+});
 // [RUN SERVER]
 const server = app.listen(port, function(){
     console.log("Express server has started on port " + port)
