@@ -12,9 +12,13 @@ var autoIncrement =require('mongoose-auto-increment');
 app.use(bodyParser.json());
 
 // CORS 설정
-app.use(cors());
-const corsOptions ={
-    origin : 'http://localhost:3000',
+// app.options('*', cors());
+var whiteList = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
+var corsOptions ={
+    origin : function(origin, callback) {
+        var isWhiteListed = whiteList.indexOf(origin) !== -1;
+        callback(null, isWhiteListed);
+    },
     credentials: true,
 };
 app.use(cors(corsOptions));
@@ -37,9 +41,9 @@ var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.
 autoIncrement.initialize(connect);
 
 app.use((req, res, next)=> {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    res("Access-Control-Allow-Origin", "*");
+    res("Access-Control-Allow-Headers", "X-Requested-With");
+    res("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
     next();
 });
 
