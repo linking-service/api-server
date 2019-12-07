@@ -11,18 +11,13 @@ var autoIncrement =require('mongoose-auto-increment');
 
 app.use(bodyParser.json());
 
-
-app.use(cors());
-// app.options('*',cors(corsOpt));
-
 // CORS 설정
-// app.options('*', cors());
-// app.use(cors());
-// const corsOptions ={
-//     origin : 'http://localhost:3000',
-//     credentials: true,
-// };
-// app.use(cors(corsOptions));
+app.use(cors());
+const corsOptions ={
+    origin : 'http://localhost:3000',
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 var db = mongoose.connection;
 db.on('error', console.error);
