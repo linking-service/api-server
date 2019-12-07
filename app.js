@@ -40,14 +40,6 @@ mongoose.connect('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNe
 var connect = mongoose.createConnection('mongodb://admin:linking13579@106.10.43.34:27017/admin', {useNewUrlParser: true,useUnifiedTopology: true, dbName: 'linking'});
 autoIncrement.initialize(connect);
 
-app.use((req, res, next)=> {
-    res("Access-Control-Allow-Origin", "*");
-    res("Access-Control-Allow-Headers", "X-Requested-With");
-    res("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-    next();
-});
-
-
 app.get('/', (req,res)=>{
     res.send("Welcome Linking Service");
 });
