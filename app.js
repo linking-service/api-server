@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // CORS 설정
 // app.options('*', cors());
-var whiteList = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
+var whiteList = ['http://localhost:3001', 'http://localhost:3002'];
 var corsOptions ={
     origin : function(origin, callback) {
         var isWhiteListed = whiteList.indexOf(origin) !== -1;
