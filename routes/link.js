@@ -193,6 +193,18 @@ router.post("/:link_id/unread", async(req, res)=> {
     });
     return res.send("Read Status Changed to unread");
 });
+router.post("/:link_id/readchange", async(req,res)=>{
+     await linkModel.find({link_id :req.params.link_id},{_id:0,read_status:1},async (err,read_status)=> {
+        if(err) console.log(err);
+        if(read_status[0].read_status== 1){
+          await linkModel.findOneAndUpdate({link_id :req.params.link_id},{read_status : 0})
+
+        }else{
+            await linkModel.findOneAndUpdate({link_id :req.params.link_id},{read_status : 1})
+        }
+        return res.json(read_status);
+    })
+});
 
 // 링크 유저 즐겨찾기 목록 저장 및 삭제
 router.post("/:display_name/:link_id/favorite", async(req, res)=>{
