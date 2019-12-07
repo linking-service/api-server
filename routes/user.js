@@ -47,5 +47,20 @@ router.get("/:display_name/delete",function (req,res){
 
 })
 
+//display_name 변경
+router.post("/:display_name/update" ,async (req,res) =>{
+   await userModel.findOneAndUpdate({display_name : req.params.display_name},
+        {
+            display_name: req.body.display_name,
+
+        },function (err){
+            if(err){
+                console.log(err);
+                res.send("update fail");
+            }
+            else{res.send("updated")}
+        })
+});
+
 
 module.exports = router;
