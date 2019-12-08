@@ -30,7 +30,6 @@ if(type ==0) {
         })
         Mail.save();
         return res.send(200);
-            //return res.json(Mail.message);
     });
 }
 
@@ -53,10 +52,6 @@ if(type ==0) {
                 res.status(200).send('delete mail')
             }
         })
-
-      //  return res.send(200);
-
-        // return res.json(Mail.message);
     }
     else if(type ==2){
         const Mail = new mailModel({
@@ -77,9 +72,6 @@ if(type ==0) {
                 res.status(200).send('delete mail')
             }
         })
-       // return res.send(200);
-
-        // return res.json(Mail.message);
     }
 });
 

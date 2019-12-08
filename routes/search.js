@@ -15,12 +15,8 @@ router.get('/:display_name/:keyword',async (req,res)=> {
     let resultarray = null;
     let resultarray2 = null;
     try{
-        // resultarray = await userModel.find({},{_id:0,display_name:1, name:1}).where("follower").equals(displayName)
-        //     .regex("display_name" ,query);
         resultarray = await userModel.find({'display_name' :{$regex : query, $options : 'i'}},{_id:0,display_name:1, name:1}).where("follower").equals(displayName);
-
         resultarray2 = await userModel.find({'display_name' :{$regex : query, $options : 'i'}},{_id:0,display_name:1, name:1,follower:1}).where("follower").ne(displayName).where("display_name").ne(displayName)
-          //  .regex("display_name" ,query);
 
     }catch(err){
         if(err) console.log(err);
@@ -89,25 +85,14 @@ router.get('/:display_name/:keyword/all',async (req,res)=> {
     try{
         metaDescResult = await linkModel.find({display_name:displayName,'meta_desc' :{$regex : query, $options : 'i'}},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1});
-        //.regex("meta_desc",query);
-        // metaDescResult = await linkModel.find({display_name:displayName},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
-        //     meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1},{ meta_desc :{ $regex : query, $options: 'i'}});
-
         metaTitleResult = await linkModel.find({display_name:displayName,'meta_title' :{$regex : query, $options : 'i'}},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1});
-         //   .regex("meta_title" ,query);
-
-
         descResult = await linkModel.find({display_name:displayName,'desc' :{$regex : query, $options : 'i'}},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1});
-        //    .regex("desc" ,query);
-
-        tagResult = await linkModel.find({display_name:displayName,'tag' :{$regex : query, $options : 'i'}},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
+         tagResult = await linkModel.find({display_name:displayName,'tag' :{$regex : query, $options : 'i'}},{_id:0, link :1,tag:1,desc:1,meta_desc:1,
             meta_imgUrl: 1,meta_title: 1,read_status: 1,created_time: 1, revised_time: 1, link_id:1, favorite_status:1,display_name:1});
-         //   .regex("tag",query);
 
         var result =_.union(metaTitleResult,descResult,tagResult,metaDescResult);
-        //var result =_.union(metaDescResult);
         var result2 = _.uniq(result,'link');
         return await res.json(result2);
 
