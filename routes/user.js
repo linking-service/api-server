@@ -5,10 +5,12 @@ const _ = require("underscore");
 const cors = require('cors');
 
 router.post('/', async (req,res)=>{
-    userModel.findOne({email:req.body.email}, async (err, email)=>{
+    userModel.findOne({email:req.body.email},{_id:0, email:1}, async (err, email)=>{
+        const Name = req.body.name ;
         if(err) return res.status(500).json({error:err});
+        console.log(email);
         //등록되지 않은 user 등록
-        if(!email){
+        if(email== null){
             var user = new userModel(
                 {   
                     email : req.body.email,
@@ -21,19 +23,29 @@ router.post('/', async (req,res)=>{
                 console.log('user information saved!');
             });
             let code = {"code" :0};
-            Object.assign(code,req.body.name);
+            Object.assign(code,{display_name :Name});
 
             return res.json(code);
 
         }
+        else{
+            let displayName;
+            displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
+            let code = {"code" :1};
+            Object.assign(code,displayName[0]);
+
+            return await res.json(code);
+
+
+        }
     });
-
-    let displayName;
-    displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
-    let code = {"code" :1};
-    Object.assign(code,displayName[0]);
-
-    return await res.json(code);
+    //
+    // let displayName;
+    // displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
+    // let code = {"code" :1};
+    // Object.assign(code,displayName[0]);
+    //
+    // return await res.json(code);
 
 });
 
