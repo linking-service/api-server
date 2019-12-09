@@ -16,28 +16,17 @@ router.post('/', async (req,res)=>{
                     display_name : req.body.name,
                 });
 
-            // user.save(function (err) {
-            //     if(err) return console.log(err);
-            //     console.log('user information saved!');
-            //   });
             user.save(function (err) {
                 if(err) return console.log(err);
                 console.log('user information saved!');
             });
             let code = {"code" :0};
-            Object.assign(code,req.body.display_name);
+            Object.assign(code,req.body.name);
 
             return res.json(code);
-         //  return res.status(404).json({code : 0});
+
         }
-        // let displayName;
-        // displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
-        // let code = {"code" :0};
-        // Object.assign(code,displayName[0]);
-        //
-        // return res.json(code);
-       // res.json({code : 1});
-    })
+    });
 
     let displayName;
     displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
