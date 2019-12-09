@@ -68,7 +68,8 @@ router.get('/:display_name/:keyword',async (req,res)=> {
     for(var j in nonfollowingarray){
         resultArray.push(nonfollowingarray[j]);
     }
-   return res.json(resultArray);
+
+   return res.json(resultArray );
 });
 
 // 전체 검색

@@ -197,7 +197,7 @@ router.post("/:dir_id/:display_name/share", async(req,res)=> {
             })
         }
     })
-})
+});
 
 
 

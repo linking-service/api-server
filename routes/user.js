@@ -20,7 +20,13 @@ router.post('/', async (req,res)=>{
                 if(err) return console.log(err);
                 console.log('user information saved!');
               });
-            return res.status(404).json({code : 0});
+            let displayName;
+            displayName=  userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
+            let code = {"code" :0};
+            Object.assign(code,displayName[0]);
+
+            return res.json(code);
+         //   return res.status(404).json({code : 0});
         }
        // res.json({code : 1});
     })
