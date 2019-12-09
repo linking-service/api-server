@@ -5,7 +5,7 @@ const _ = require("underscore");
 const cors = require('cors');
 
 router.post('/', async (req,res)=>{
-    userModel.findOne({email:req.body.email}, function(err, email){
+    userModel.findOne({email:req.body.email}, async (err, email)=>{
         if(err) return res.status(500).json({error:err});
         //등록되지 않은 user 등록
         if(!email){
@@ -20,14 +20,20 @@ router.post('/', async (req,res)=>{
                 if(err) return console.log(err);
                 console.log('user information saved!');
               });
-            let displayName;
-            displayName=  userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
-            let code = {"code" :0};
-            Object.assign(code,displayName[0]);
-
-            return res.json(code);
+            // let displayName;
+            // displayName= userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
+            // let code = {"code" :0};
+            // Object.assign(code,displayName[0]);
+            //
+            // return res.json(code);
          //   return res.status(404).json({code : 0});
         }
+        let displayName;
+        displayName= await userModel.find({email:req.body.email},{_id:0, display_name:1}).lean();
+        let code = {"code" :0};
+        Object.assign(code,displayName[0]);
+
+        return res.json(code);
        // res.json({code : 1});
     })
 
