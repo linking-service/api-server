@@ -64,7 +64,6 @@ if(type ==0) {
 
         directoryModel.updateOne({user_id: req.params.sender}, {$push: {shared: displayName}}, function (err) {
             if (err) console.log(err);
-            res.send("share to user")
         })
 
 
