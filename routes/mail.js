@@ -62,6 +62,12 @@ if(type ==0) {
         })
         Mail.save();
 
+        directoryModel.updateOne({user_id: req.params.sender}, {$push: {shared: displayName}}, function (err) {
+            if (err) console.log(err);
+            res.send("share to user")
+        })
+
+
         //해당 메세지 삭제
         const mailID = req.body.mail_id;
         mailModel.deleteOne({mail_id: mailID},function (err) {
