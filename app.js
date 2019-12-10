@@ -13,15 +13,15 @@ app.use(bodyParser.json());
 
 // CORS 설정
 app.use(cors()); // 모든 도메인 Request 활성화
-// var whiteList = ['http://localhost:3001', 'http://localhost:3002'];
-// var corsOptions ={
-//     origin : function(origin, callback) {
-//         var isWhiteListed = whiteList.indexOf(origin) !== -1;
-//         callback(null, isWhiteListed);
-//     },
-//     credentials: true,
-// };
-// app.use(cors(corsOptions));
+var whiteList = ['http://www.linkingshuffle.site/'];
+var corsOptions ={
+    origin : function(origin, callback) {
+        var isWhiteListed = whiteList.indexOf(origin) !== -1;
+        callback(null, isWhiteListed);
+    },
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 var db = mongoose.connection;
 db.on('error', console.error);
