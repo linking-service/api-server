@@ -85,7 +85,7 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
         //         return res.send("this user already shared");
         //     }
         //     else {
-                directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
+                await directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
                     if (err) console.log(err);
                     res.send("share to user")
                 })
