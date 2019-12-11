@@ -16,7 +16,7 @@ class Scraper {
         return data.filter(elem => {
             const itemprop = elem.itemprop ? elem.itemprop : "";
             const property = elem.property ? elem.property : "";
-            const name = elem.itemprop ? elem.name : "";
+            const name = elem.name ? elem.name : "";
             return (
                 itemprop.includes(target) ||
                 property.includes(target) ||
