@@ -11,27 +11,28 @@ const direcrotynameModel = require("../models/directoryName");
 //sender : 수신자
 //type :0 공유 btn 클릭할때  1 공유 거절할때  2 공유 수락할때
 router.post('/:display_name/:sender/:type', async (req,res)=>{
-   const displayName = req.params.display_name;
-   const senderName = req.params.sender;
-   const type = req.params.type;
+    const displayName = req.params.display_name;
+    const senderName = req.params.sender;
+    const type = req.params.type;
 
-if(type ==0) {
-    const dirID = req.body.dir_id;
+    if(type ==0) {
+        const dirID = req.body.dir_id;
 
-    await direcrotynameModel.find({dir_id: dirID}, {_id: 0, name: 1}, function (err, name) {
-        console.log(name[0].name);
-        const dirName = name[0].name;
+        await direcrotynameModel.find({dir_id: dirID}, {_id: 0, name: 1}, function (err, name) {
+            console.log(name[0].name);
+            const dirName = name[0].name;
 
-        const Mail = new mailModel({
-            display_name: senderName,
-            sender: displayName,
-            message: displayName + "님이 " + dirName + " 디렉토리를 공유했습니다.",
-            status: 1
-        })
-        Mail.save();
-        return res.send(200);
-    });
-}
+            const Mail = new mailModel({
+                display_name: senderName,
+                sender: displayName,
+                message: displayName + "님이 " + dirName + " 디렉토리를 공유했습니다.",
+                status: 1,
+                dir_id : dirID
+            })
+            Mail.save();
+            return res.send(200);
+        });
+    }
 
     if(type ==1){
         const mailID = req.body.mail_id;
@@ -40,7 +41,8 @@ if(type ==0) {
             display_name: senderName,
             sender: displayName,
             message: displayName + "님이 디렉토리를 공유를 거절했습니다.",
-            status :0
+            status :0,
+            dir_id :0
         })
         Mail.save();
         //해당 메세지 삭제
@@ -54,18 +56,16 @@ if(type ==0) {
         })
     }
     else if(type ==2){
+        const dirID = req.body.dir_id;
+
         const Mail = new mailModel({
             display_name: senderName,
             sender: displayName,
             message: displayName + "님이 디렉토리를 공유를 수락했습니다.",
-            status :0
+            status :0,
+            dir_id: 0
         })
         Mail.save();
-
-        directoryModel.updateOne({user_id: req.params.sender}, {$push: {shared: displayName}}, function (err) {
-            if (err) console.log(err);
-        })
-
 
         //해당 메세지 삭제
         const mailID = req.body.mail_id;
@@ -75,6 +75,20 @@ if(type ==0) {
                 res.status(404).send('delete fail');
             } else{
                 res.status(200).send('delete mail')
+            }
+        });
+
+        directoryModel.find({shared: displayName, dir_id: dirID}, {_id: 0, shared: 1}, function (err, shared) {
+            if (err) console.log(err);
+            if (shared.length == 1) {
+                console.log(shared[0].shared);
+                return res.send("this user already shared");
+            }
+            else {
+                directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
+                    if (err) console.log(err);
+                    res.send("share to user")
+                })
             }
         })
     }
@@ -91,7 +105,7 @@ router.get("/:display_name/mailnumber", async(req,res)=>{
 
 //유저 메세지함 출력
 router.get("/:display_name/mailList", async(req,res)=>{
-    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1,status:1,mail_id:1},function (err, message) {
+    mailModel.find({display_name:req.params.display_name},{_id:0, message:1,display_name:1,sender:1,status:1,mail_id:1,dir_id:1},function (err, message) {
         if(err) console.log(err);
 
         return res.json(message);
