@@ -78,19 +78,19 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
             }
         });
 
-        // directoryModel.find({shared: displayName, dir_id: dirID}, {_id: 0, shared: 1}, function (err, shared) {
-        //     if (err) console.log(err);
-        //     if (shared.length == 1) {
-        //         console.log(shared[0].shared);
-        //         return res.send("this user already shared");
-        //     }
-        //     else {
+        directoryModel.find({shared: displayName, dir_id: dirID}, {_id: 0, shared: 1}, async (err, shared)=> {
+            if (err) console.log(err);
+            if (shared.length == 1) {
+                console.log(shared[0].shared);
+                return res.send("this user already shared");
+            }
+            else {
                 await directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
                     if (err) console.log(err);
                     res.send("share to user")
                 })
-            //}
-        //})
+            }
+        })
     }
 });
 
