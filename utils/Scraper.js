@@ -52,7 +52,7 @@ class Scraper {
 
         return {
             title: title ? title.content : pageTitle ? pageTitle : this.url,
-            desc: desc ? desc.content : this.url,
+            desc: desc ? desc.content : "",
             imgUrl: imgUrl ? imgUrl.content : ""
         };
     }
