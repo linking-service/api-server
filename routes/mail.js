@@ -64,8 +64,13 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
             message: displayName + "님이 디렉토리를 공유를 수락했습니다.",
             status :0,
             dir_id: 0
-        })
+        });
         Mail.save();
+
+        await directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
+            if (err) console.log(err);
+            res.send("share to user")
+        });
 
         //해당 메세지 삭제
         const mailID = req.body.mail_id;
@@ -85,10 +90,10 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
         //         return res.send("this user already shared");
         //     }
         //     else {
-                await directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
-                    if (err) console.log(err);
-                    res.send("share to user")
-                })
+        //         await directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
+        //             if (err) console.log(err);
+        //             res.send("share to user")
+        //         })
             // }
          //})
     }
