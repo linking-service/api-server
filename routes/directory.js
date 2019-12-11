@@ -126,9 +126,13 @@ router.post('/:display_name/:dir_id/add', async (req, res, next) => {
         console.log('save error');
         console.log(err);
     }
+    let result = null;
+
+    result = await directoryNameModel.find({name:named},{_id:0,dir_id:1}).sort({'dir_id':-1});
+    console.log(result[0].dir_id);
 
     //저장된 디렉토리 이름 호출 후 array에 저장
-    directoryNameModel.find({name: named}, {_id: 0, dir_id: 1}, function (err, dir_id) {
+    directoryNameModel.find({name: named,dir_id:result[0].dir_id}, {_id: 0, dir_id: 1}, function (err, dir_id) {
         if (err) return res.status(500).json({error: err});
         if (!dir_id) {
             return res.send('not exist user');
