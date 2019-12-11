@@ -69,7 +69,7 @@ router.post('/:display_name/:sender/:type', async (req,res)=>{
 
         directoryModel.updateOne({dir_id: dirID}, {$push: {shared: displayName}}, function (err) {
             if (err) console.log(err);
-            res.send("share to user")
+          //  res.send("share to user")
         });
 
         //해당 메세지 삭제
