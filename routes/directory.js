@@ -198,7 +198,6 @@ router.post("/:dir_id/:display_name/share", async(req,res)=> {
             directoryModel.updateOne({dir_id: req.params.dir_id}, {$push: {shared: displayName}}, function (err) {
                 if (err) console.log(err);
                 res.send("share to user")
-
             })
         }
     })
