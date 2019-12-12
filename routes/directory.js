@@ -198,6 +198,7 @@ router.post("/:dir_id/:display_name/share", async(req,res)=> {
             directoryModel.updateOne({dir_id: req.params.dir_id}, {$push: {shared: displayName}}, function (err) {
                 if (err) console.log(err);
                 res.send("share to user")
+
             })
         }
     })
@@ -289,5 +290,8 @@ router.get("/:display_name", async (req,res)=>{
 
     }).lean();
 
-})
+});
+
+//공유리스트 유저 확인
+
 module.exports = router;
